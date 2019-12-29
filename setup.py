@@ -6,5 +6,5 @@ setup (name = 'gripy',
        install_requires=['numpy', 'pupygrib',],
        description = '''Grib Reader In PYthon.,
            'Developmental repo for a python based grib reader. Replacing external deps with python''',
-       pacakges = ['gripy'],
+       packages = ['gripy',],
       )
