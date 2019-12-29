@@ -5,6 +5,7 @@ import pupygrib
 
 from gripy.comunpack import comunpack
 
+
 def mkieee(num):
     bits, = struct.unpack('>I', struct.pack('>f', num))
     return bits

@@ -303,13 +303,13 @@ def _dec2bin(val, maxbits = 8):
 
 def _putieeeint(r):
     """convert a float to a IEEE format 32 bit integer"""
-    ra = np.array([r],'f')
+    ra = np.array([r],'<f')
     ia = g2pylib.rtoi_ieee(ra)
     return ia[0]
 
 def _getieeeint(i):
     """convert an IEEE format 32 bit integer to a float"""
-    ia = np.array([i],'i')
+    ia = np.array([i],'<i')
     ra = g2pylib.itor_ieee(ia)
     return ra[0]
 
