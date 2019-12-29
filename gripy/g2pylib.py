@@ -7,9 +7,8 @@ from gripy.comunpack import comunpack
 
 
 def mkieee(num):
-    print(num)
     bits, = struct.unpack('>I', struct.pack('>f', num))
-    return np.int64(bits).astype(np.int32)
+    return bits
 
 
 def rdieee(num):
@@ -32,7 +31,11 @@ def itor_ieee(ra):
 def rtoi_ieee(ra):
     return_ints = np.array(ra.shape, dtype=np.int32)
     for i, num in enumerate(ra):
-        return_ints[i] = mkieee(num)
+        newint = mkieee(num)
+        try:
+            return_ints[i] = newint
+        except OverflowError:
+            return_ints[i] = np.int64(newint).astype(np.int32)
     return return_ints
 
 
