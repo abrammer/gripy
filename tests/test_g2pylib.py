@@ -11,8 +11,10 @@ from gripy import comunpack
 def test_py3_ieeeint_round_trip():
     tests = np.array([-256.56, -10.3, 0.5, 10.6, 100.6, 234327832], dtype=np.float32)
     for test in tests:
-        ieeeint = py3grib2._putieeeint(test)
-        return_float = py3grib2._getieeeint(ieeeint)
+        #ieeeint = py3grib2._putieeeint(test)
+        print(test)
+        ieeeint = g2pylib.rtoi_ieee(test)
+        return_float = py3grib2._getieeeint(ieeeint[0])
         assert return_float == test
 
 
@@ -87,7 +89,7 @@ if __name__ == "__main__":
 #     logging.getLogger().setLevel(logging.INFO)
 #     FORMAT = '%(asctime)-15s | %(filename)s +%(lineno)s | %(message)s'
 #     logging.basicConfig(format=FORMAT)
-    
+
 #     _dir = pathlib.Path(__file__).parent.resolve()
 # #     msgs3 = py3grib2.Grib2Decode(_dir.parent/'gfs.t12z.pgrb2.0p25.f000')
 # #     msgs = ncepgrib2.Grib2Decode(_dir.parent/'gfs.t12z.pgrb2.0p25.f000')
