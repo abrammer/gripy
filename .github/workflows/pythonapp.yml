@@ -3,9 +3,9 @@ name: Python application
 on: [push]
 
 jobs:
-  build:
+  unit_tests:
 
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v1
