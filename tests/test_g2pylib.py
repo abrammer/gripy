@@ -13,7 +13,7 @@ def test_py3_ieeeint_round_trip():
     for test in tests:
         #ieeeint = py3grib2._putieeeint(test)
         print(test)
-        ieeeint = g2pylib.rtoi_ieee(test)
+        ieeeint = g2pylib.rtoi_ieee(np.array([test,]))
         return_float = py3grib2._getieeeint(ieeeint[0])
         assert return_float == test
 
