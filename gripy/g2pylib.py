@@ -9,7 +9,7 @@ from gripy.comunpack import comunpack
 def mkieee(num):
     print(num)
     bits, = struct.unpack('>I', struct.pack('>f', num))
-    print(bits)
+    print(type(bits))
     return bits
 
 
