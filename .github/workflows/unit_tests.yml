@@ -1,4 +1,4 @@
-name: Python application
+name: gripy Unit Tests
 
 on: [push]
 
