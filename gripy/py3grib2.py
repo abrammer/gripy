@@ -12,7 +12,7 @@ try:
 except ImportError:
     from io import BytesIO as StringIO
 
-import numpy as np 
+import numpy as np
 from numpy import ma
 
 from gripy import g2pylib
@@ -646,7 +646,6 @@ lat/lon values returned by grid method may be incorrect."""
         """
         # make sure scan mode is supported.
         # if there is no 'scanmodeflags', then grid is not supported.
-        from redtoreg import _redtoreg
         if not hasattr(self,'scanmodeflags'):
             raise ValueError('unsupported grid definition template number %s'%self.grid_definition_template_number)
         else:
@@ -707,6 +706,7 @@ lat/lon values returned by grid method may be incorrect."""
                 fld = np.reshape(fld,(ny,nx))
         else:
             if gdsinfo[2] and gdtnum == 40: # ECMWF 'reduced' global gaussian grid.
+                from redtoreg import _redtoreg
                 if expand:
                     nx = 2*ny
                     lonsperlat = self.grid_definition_list
