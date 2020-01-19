@@ -1,9 +1,9 @@
 import struct
 
 import numpy as np
-import pupygrib
 
 from gripy.comunpack import comunpack
+from gripy import binary
 
 
 def mkieee(num):
@@ -285,15 +285,15 @@ def pds_template(template_number):
 
 def get_pp_bits(buf, offset, nbits):
     formats = {
-        -1:pupygrib.binary.unpack_int8_from,
-        -2:pupygrib.binary.unpack_int16_from,
-        -3:pupygrib.binary.unpack_int24_from,
-        -4:pupygrib.binary.unpack_int32_from,
-        1:pupygrib.binary.unpack_uint8_from,
-        2:pupygrib.binary.unpack_uint16_from,
-        3:pupygrib.binary.unpack_uint24_from,
-        4:pupygrib.binary.unpack_uint32_from,
-        5:pupygrib.binary.unpack_uint64_from,
+        -1: binary.unpack_int8_from,
+        -2: binary.unpack_int16_from,
+        -3: binary.unpack_int24_from,
+        -4: binary.unpack_int32_from,
+        1: binary.unpack_uint8_from,
+        2: binary.unpack_uint16_from,
+        3: binary.unpack_uint24_from,
+        4: binary.unpack_uint32_from,
+        5: binary.unpack_uint64_from,
     }
     bits = formats[nbits](buf, offset)
     return bits
