@@ -19,10 +19,10 @@ jobs:
         python-version: ${{ matrix.python }}
     
     - name: apt Install fortran
-      run: apt install gfortran
+      run: sudo apt install gfortran
       if: matrix.os == 'ubuntu-latest'
     - name:  brew install gfortran
-      run: brew install gfortran
+      run: sudo brew install gfortran
       if: matrix.os == 'macos-latest'
     - name:  choco install gfortran
       run: choco install gfortran
