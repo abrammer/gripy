@@ -37,7 +37,7 @@ def test_get_ieeeint():
 
 def test_section6_decode():
     def make_sect6_buff(ndpts):
-        if ndpts==0:
+        if ndpts == 0:
             length = 6
             secnum = 6
             flag = 255
@@ -49,7 +49,8 @@ def test_section6_decode():
             ones = np.ones((int(ndpts/16),), dtype=int) * 255
             zeros = np.zeros((int(ndpts/16),), dtype=int)
             bitmap = np.concatenate((ones, zeros))
-            buff = struct.pack(f">I{((ndpts/8)+2):.0f}B", length, secnum, flag, *bitmap)
+            buff = struct.pack(f">I{((ndpts/8)+2):.0f}B",
+                               length, secnum, flag, *bitmap)
         return buff
 
     buff = make_sect6_buff(0)
@@ -60,7 +61,7 @@ def test_section6_decode():
     ndpts = 1038240
     npts2 = int(ndpts / 2)
     buff = make_sect6_buff(ndpts)
-    bitmap, bitmapflag  = g2pylib.unpack6(buff, ndpts, 0, 0)
+    bitmap, bitmapflag = g2pylib.unpack6(buff, ndpts, 0, 0)
     assert bitmap.shape == (1038240,)
     assert all(bitmap[:npts2] == 1)
     assert all(bitmap[npts2:] == 0)
@@ -68,16 +69,16 @@ def test_section6_decode():
 
 
 def test_gbits_int():
-        _input = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0,  1, 0, 1, 0, 0, 0, 0, 0,], dtype=np.uint8)
-        __input = np.packbits(_input)
-        retval = gbits(__input, 2, 9, 0, 2)
-        assert retval == pytest.approx(np.array([160,160]))
+    _input = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, ], dtype=np.uint8)
+    __input = np.packbits(_input)
+    retval = gbits(__input, 2, 9, 0, 2)
+    assert retval == pytest.approx(np.array([160, 160]))
 
-        
+
 def test_gbits_hex():
-        _input =np.frombuffer(b'\x0e\xb7', np.uint8)
-        retval = gbits(_input, 0, 16, 0, 1)
-        assert retval == pytest.approx(np.array([3767,]))
+    _input = np.frombuffer(b'\x0e\xb7', np.uint8)
+    retval = gbits(_input, 0, 16, 0, 1)
+    assert retval == pytest.approx(np.array([3767, ]))
 
 
 if __name__ == "__main__":
@@ -94,7 +95,7 @@ if __name__ == "__main__":
 #     logging.getLogger().setLevel(logging.INFO)
 #     FORMAT = '%(asctime)-15s | %(filename)s +%(lineno)s | %(message)s'
 #     logging.basicConfig(format=FORMAT)
-    
+
 #     _dir = pathlib.Path(__file__).parent.resolve()
 # #     msgs3 = py3grib2.Grib2Decode(_dir.parent/'gfs.t12z.pgrb2.0p25.f000')
 # #     msgs = ncepgrib2.Grib2Decode(_dir.parent/'gfs.t12z.pgrb2.0p25.f000')
