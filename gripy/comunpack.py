@@ -56,7 +56,7 @@ def gbits(buff, pos, nbits: int, nskip, n_num):
         start_pos = byte_offset
         end_pos = start_pos + tot_bits
         byte_count = np.max([1, int(np.ceil(end_pos/8))])
-
+        # print(buff[byte_idx: byte_idx+byte_count])
         membuff = np.frombuffer(buff, dtype='>B', count=byte_count, offset=byte_idx)
         bits = np.unpackbits(membuff)
 
@@ -69,7 +69,7 @@ def gbits(buff, pos, nbits: int, nskip, n_num):
 
         unpack_fmt = f">{n_num}{fmts[byte_size]}"
         retvals[:] = struct.unpack_from(unpack_fmt, np.packbits(output))
-        
+
     return retvals
 
 
@@ -123,9 +123,9 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
     #   g2float ref,bscale,dscale,rmiss1,rmiss2
     #   g2int totBit, totLen
 
-      #printf('IDRSTMPL: ',(idrstmpl(j),j=1,16)
+    # print(f"IDRSTMPL: {idrstmpl}")
     ref = g2pylib.rdieee(idrstmpl[0])
-#      printf("SAGTref: %f\n",ref)
+    # print("SAGTref: {ref}")
     bscale = 2.0**idrstmpl[1]
     dscale = 10.0**-idrstmpl[2]
     nbitsgref = idrstmpl[3]
@@ -135,7 +135,7 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
     nbitsglen = idrstmpl[15]
     if (idrsnum == 3):
         nbitsd=idrstmpl[17]*8
-
+    # print(f"nbitsd: {nbitsd}")
       #   Constant field
 
     if (ngroups == 0):
@@ -146,15 +146,17 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
 
 
     iofst=0
-    ifld=np.empty(ndpts, dtype=np.int)
-    #printf("ALLOC ifld: %d %x\n",(int)ndpts,ifld)
-    gref=np.empty(ngroups, dtype=np.int)
-    #printf("ALLOC gref: %d %x\n",(int)ngroups,gref)
+    ifld = np.empty(ndpts, dtype=np.int)
+    # print(f"ALLOC ifld: {ndpts},")
+    gref = np.empty(ngroups, dtype=np.int)
+    # print(f"ALLOC gref: {ngroups}, ")
     gwidth=np.empty(ngroups, dtype=np.int)
-    #printf("ALLOC gwidth: %d %x\n",(int)ngroups,gwidth)
+    # print(f"ALLOC gwidth: {ngroups}, {gwidth}")
     #
     #  Get missing values, if supplied
     #
+    rmiss1=0
+    rmiss2=0
     if ( idrstmpl[6] == 1 ):
         if (itype == 0):
             rmiss1 = g2pylib.rdieee(idrstmpl[7])
@@ -169,7 +171,7 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
             rmiss1=idrstmpl[7]
             rmiss2=idrstmpl[8]
 
-    #printf("RMISSs: %f %f %f \n",rmiss1,rmiss2,ref)
+    # print(f"RMISSs:{rmiss1},{rmiss2},{ref}")
     #
     #  Extract Spatial differencing values, if using DRS Template 5.3
     #
@@ -194,12 +196,12 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
             ival2=0
             minsd=0
     # print(ival1, ival2, minsd)
-    #printf("SDu %ld %ld %ld %ld \n",ival1,ival2,minsd,nbitsd)
+    # print(f"SDu {ival1},{ival2},{minsd},{nbitsd}")
 
     #
     #  Extract Each Group's reference value
     #
-      #printf("SAG1: %ld %ld %ld \n",nbitsgref,ngroups,iofst)
+    # print(f"SAG1: {nbitsgref},{ngroups},{iofst}")
     logging.info('Extract group reference values')
     if (nbitsgref != 0):
         gref[:] = gbits(cpack,iofst,nbitsgref,0,ngroups)
@@ -214,7 +216,7 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
     #
     #  Extract Each Group's bit width
     #
-    #printf("SAG2: %ld %ld %ld %ld \n",nbitsgwidth,ngroups,iofst,idrstmpl[10])
+    # print(f"SAG2:{nbitsgwidth},{ngroups},{iofst},{idrstmpl[10]}")
     logging.info('Extract groups bit width values')
     if (nbitsgwidth != 0):
         gwidth[:] = gbits(cpack, iofst, nbitsgwidth, 0, ngroups)
@@ -233,8 +235,8 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
     #
     logging.info('Extract groups length ')
     glen = np.empty(ngroups, dtype=np.int)
-    #printf("ALLOC glen: %d %x\n",(int)ngroups,glen)
-    #printf("SAG3: %ld %ld %ld %ld %ld \n",nbitsglen,ngroups,iofst,idrstmpl[13],idrstmpl[12])
+    # print(f"ALLOC glen: {ngroups},")
+    # print(f"SAG3: {nbitsglen},{ngroups},{iofst},{idrstmpl[13]},{idrstmpl[12]}")
     if (nbitsglen != 0):
         glen = gbits(cpack, iofst, nbitsglen, 0, ngroups)
         itemp=nbitsglen*ngroups
@@ -247,6 +249,7 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
 
     glen[:] = (glen[:]*idrstmpl[13])+idrstmpl[12]
     glen[-1] = idrstmpl[14]
+    # print(glen[:8])
     #
     #  Test to see if the group widths and lengths are consistent with number of
     #  values, and length of section 7.
@@ -254,7 +257,8 @@ def comunpack(cpack, lensec, idrsnum, idrstmpl, ndpts):
 
     totBit = np.sum(gwidth*glen)
     totLen = np.sum(glen)
-
+    # print(f'{gwidth}, {glen}')
+    
     if (totLen != ndpts):
         print('totLen != ndpts')
         print(f'{totLen} != {ndpts}')

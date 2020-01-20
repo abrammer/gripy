@@ -2,7 +2,8 @@ import struct
 
 import numpy as np
 
-from gripy.comunpack import comunpack
+# from gripy.comunpack import comunpack
+from gripy.libg2 import comunpack
 from gripy import binary
 
 
@@ -322,34 +323,6 @@ def unpack1(gribmsg,pos):
     header = struct.unpack_from('>IBhhBBBhBBBBBBB', gribmsg, pos)
     # length, secnum, center_id, subcenter, grib_table, gribaug_table, timesig,\
     #     year, mm,dd,hh,mn, ss, prod_status, data_type, extra = header
-    # idsect = []
-    # pos = pos + 5
-    # idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    # pos = pos + 2
-    # idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    # pos = pos + 2
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    # pos = pos + 2
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
     return np.array(header[2:],dtype=np.int32), pos+header[0]
 
 
@@ -450,6 +423,7 @@ def unpack7(gribmessage, gdtnum, gdtmpl,drtnum, drtmpl,ndpts,ipos, zeros,printmi
     fld = g2_unpack7(gribmessage, ipos, gdtnum, gdtmpl, drtnum, drtmpl, ndpts)
     return fld
 
+
 def g2_unpack7(cgrib, iofst, igdsnum, igdstmpl, idrsnum, idrstmpl, ngpts):
     lensec, isecnum = struct.unpack_from('>IB', cgrib, iofst)
     # octet_cnt = int((lensec-5))
@@ -463,7 +437,11 @@ def g2_unpack7(cgrib, iofst, igdsnum, igdstmpl, idrsnum, idrstmpl, ngpts):
     elif (idrsnum == 2) or (idrsnum == 3):
         # print("cgrib:", len(cgrib[iofst+5:]))
         # raise NotImplementedError('comunpack is not support yet, sorry :/ ')
+#         grb_int = np.frombuffer(cgrib[iofst+5:], dtype=np.uint8)
+#         memview = memoryview(cgrib[iofst+5:])
+#         fld, ier = comunpack(grb_int, lensec, idrsnum, idrstmpl, ngpts)
         fld = comunpack(cgrib[iofst+5:], lensec, idrsnum, idrstmpl, ngpts)
+#         print(ier)
 #         fld = comunpack(bit_buff, lensec, idrsnum, idrstmpl, ngpts)
     elif (idrsnum == 50):           # Spectral Simple
         # simunpack(cgrib[ipos:],idrstmpl,ndpts-1,lfld+1)

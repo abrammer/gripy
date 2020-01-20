@@ -38,7 +38,7 @@ def test_grib2decode_gfs_ident_sect():
         assert all(expect == ret_msg.identification_section)
 
 
-def test_grib2decode_gfs_values():      
+def test_grib2decode_gfs_values():    
     grib_file = get_test_gfs_grib()
     msgs = py3grib2.Grib2Decode(str(grib_file))
     

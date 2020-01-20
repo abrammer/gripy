@@ -669,7 +669,7 @@ lat/lon values returned by grid method may be incorrect."""
         except (ValueError,TypeError,IOError):
             f = StringIO(self._grib_filename)
         f.seek(self._grib_message_byteoffset)
-        gribmsg = f.read(self._grib_message_length)
+        gribmsg = memoryview(f.read(self._grib_message_length))
         f.close()
         gdtnum = self.grid_definition_template_number
         gdtmpl = self.grid_definition_template
