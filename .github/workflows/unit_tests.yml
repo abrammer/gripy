@@ -18,14 +18,16 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
     
-    - name: apt Install fortran
+    - name: ubuntu install fortran
       run: sudo apt install gfortran
       if: matrix.os == 'ubuntu-latest'
-    - name:  brew install gfortran
+
+    - name: macos install fortran
       run: brew install gcc
       if: matrix.os == 'macos-latest'
-    - name:  choco install mingw
-      run: choco install gfortran
+
+    - name: windows install fortran
+      run: choco install mingw
       if: matrix.os == 'windows-latest'
 
     - name: Install dependencies
