@@ -5,8 +5,7 @@ import numpy as np
 
 from gripy import py3grib2
 from gripy import g2pylib
-from gripy.libg2 import comunpack
-from gripy.libg2 import gbytes as gbits
+from gripy.gbits import gbits
 
 
 def test_py3_ieeeint_round_trip():
@@ -66,6 +65,21 @@ def test_section6_decode():
     assert all(bitmap[:npts2] == 1)
     assert all(bitmap[npts2:] == 0)
     assert bitmapflag == 0
+
+
+def test_fgbits_int():
+    from gripy.libg2 import gbytes as gbits
+    _input = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, ], dtype=np.uint8)
+    __input = np.packbits(_input)
+    retval = gbits(__input, 2, 9, 0, 2)
+    assert retval == pytest.approx(np.array([160, 160]))
+
+
+def test_fgbits_hex():
+    from gripy.libg2 import gbytes as gbits
+    _input = np.frombuffer(b'\x0e\xb7', np.uint8)
+    retval = gbits(_input, 0, 16, 0, 1)
+    assert retval == pytest.approx(np.array([3767, ]))
 
 
 def test_gbits_int():
