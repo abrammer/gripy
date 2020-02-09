@@ -4,3 +4,6 @@ venv*
 .vscode
 .benchmarks
 .pytest_cache
+build/
+*.egg-info
+*.so
