@@ -4,8 +4,8 @@ import pytest
 import numpy as np
 
 from gripy.legacy import py3grib2
+from gripy.legacy.gbits import gbits
 from gripy import g2pylib
-from gripy.gbits import gbits
 
 
 def test_py3_ieeeint_round_trip():
