@@ -317,13 +317,13 @@ def get_format(nbits):
     return f">{format_str}"
 
 
-def unpack1(gribmsg,pos):
+def unpack1(gribmsg, pos, y=None):
     """unpack section 1 given starting point in bytes
     used to test pyrex interface to g2_unpack1"""
     header = struct.unpack_from('>IBhhBBBhBBBBBBB', gribmsg, pos)
     # length, secnum, center_id, subcenter, grib_table, gribaug_table, timesig,\
     #     year, mm,dd,hh,mn, ss, prod_status, data_type, extra = header
-    return np.array(header[2:],dtype=np.int32), pos+header[0]
+    return np.array(header,dtype=np.int32), pos+header[0]
 
 
 def unpack3(buff, pos, y):

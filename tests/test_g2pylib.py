@@ -3,7 +3,7 @@ import struct
 import pytest
 import numpy as np
 
-from gripy import py3grib2
+from gripy.legacy import py3grib2
 from gripy import g2pylib
 from gripy.gbits import gbits
 

@@ -3,7 +3,7 @@ import pathlib
 import pytest
 import numpy as np
 
-from gripy import py3grib2
+from gripy.legacy import py3grib2
 
 
 def get_test_gfs_grib():
@@ -58,4 +58,4 @@ def test_grib2decode_gfs_values():
 
 
 if __name__ == '__main__':
-    pytest.main()
+    test_grib2decode_gfs_ident_sect()
