@@ -73,6 +73,7 @@ def test_grib2_gfs_pds_decode():
     for expect, ret_msg in zip(expected_longname, msgs):
         assert expect == ret_msg.longname
 
+
 def test_grib2_gfs42_pds_decode():
     grib_file = get_test_gfs42_grib()
     with grib2.Grib2File(str(grib_file)) as g2:
@@ -90,7 +91,6 @@ def test_grib2_gfs42_pds_decode():
     expected_longname = ['Cloud mixing ratio']
     for expect, ret_msg in zip(expected_longname, msgs):
         assert expect == ret_msg.longname
-
 
 
 def test_grib2_nav_pds_decode():
@@ -141,5 +141,12 @@ def test_grib2decode_gfs_values():
         assert expect['mean'] == pytest.approx(np.mean(values), abs=0.1)
 
 
+def test_grib2decode_ngm_latlon():
+    grib_file = get_test_nav_grib()
+    msg = py3grib2.Grib2Decode(str(grib_file))
+    assert msg.latitude_first_gridpoint > -90.1
+    assert msg.latitude_last_gridpoint < 90.1
+
+
 if __name__ == '__main__':
-    test_grib2decode_gfs_ident_sect()
+    pytest.main()

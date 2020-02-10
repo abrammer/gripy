@@ -467,22 +467,24 @@ class Grib2Message:
         if gdtnum in [0,1,203,205,32768,32769]: # regular or rotated lat/lon grid
             scalefact = float(gdtmpl[9])
             divisor = float(gdtmpl[10])
-            if scalefact == 0: scalefact = 1.
-            if divisor <= 0: divisor = 1.e6
-            self.latitude_first_gridpoint = scalefact*gdtmpl[11]/divisor
-            self.longitude_first_gridpoint = scalefact*gdtmpl[12]/divisor
-            self.latitude_last_gridpoint = scalefact*gdtmpl[14]/divisor
-            self.longitude_last_gridpoint = scalefact*gdtmpl[15]/divisor
-            self.gridlength_in_x_direction = scalefact*gdtmpl[16]/divisor
-            self.gridlength_in_y_direction = scalefact*gdtmpl[17]/divisor
+            if scalefact == 0 or divisor <=1:
+                scalefact = 1.e-6
+            else:
+                scalefact /= divisor
+            self.latitude_first_gridpoint = scalefact*gdtmpl[11]
+            self.longitude_first_gridpoint = scalefact*gdtmpl[12]
+            self.latitude_last_gridpoint = scalefact*gdtmpl[14]
+            self.longitude_last_gridpoint = scalefact*gdtmpl[15]
+            self.gridlength_in_x_direction = scalefact*gdtmpl[16]
+            self.gridlength_in_y_direction = scalefact*gdtmpl[17]
             if self.latitude_first_gridpoint > self.latitude_last_gridpoint:
                 self.gridlength_in_y_direction = -self.gridlength_in_y_direction
             if self.longitude_first_gridpoint > self.longitude_last_gridpoint:
                 self.gridlength_in_x_direction = -self.gridlength_in_x_direction
             self.scanmodeflags = _dec2bin(gdtmpl[18])[0:4]
             if gdtnum == 1:
-                self.latitude_of_southern_pole = scalefact*gdtmpl[19]/divisor
-                self.longitude_of_southern_pole = scalefact*gdtmpl[20]/divisor
+                self.latitude_of_southern_pole = scalefact*gdtmpl[19]
+                self.longitude_of_southern_pole = scalefact*gdtmpl[20]
                 self.angle_of_pole_rotation = gdtmpl[21]
         elif gdtnum == 10: # mercator
             self.latitude_first_gridpoint = gdtmpl[9]/1.e6
@@ -536,21 +538,23 @@ class Grib2Message:
         elif gdtnum == 40 or gdtnum == 41: # gaussian grid.
             scalefact = float(gdtmpl[9])
             divisor = float(gdtmpl[10])
-            if scalefact == 0: scalefact = 1.
-            if divisor <= 0: divisor = 1.e6
+            if scalefact == 0 or divisor <=1:
+                scalefact = 1.e-6
+            else:
+                scalefact /= divisor
             self.points_between_pole_and_equator = gdtmpl[17]
-            self.latitude_first_gridpoint = scalefact*gdtmpl[11]/divisor
-            self.longitude_first_gridpoint = scalefact*gdtmpl[12]/divisor
-            self.latitude_last_gridpoint = scalefact*gdtmpl[14]/divisor
-            self.longitude_last_gridpoint = scalefact*gdtmpl[15]/divisor
+            self.latitude_first_gridpoint = scalefact*gdtmpl[11]
+            self.longitude_first_gridpoint = scalefact*gdtmpl[12]
+            self.latitude_last_gridpoint = scalefact*gdtmpl[14]
+            self.longitude_last_gridpoint = scalefact*gdtmpl[15]
             if reggrid:
-                self.gridlength_in_x_direction = scalefact*gdtmpl[16]/divisor
+                self.gridlength_in_x_direction = scalefact*gdtmpl[16]
                 if self.longitude_first_gridpoint > self.longitude_last_gridpoint:
                     self.gridlength_in_x_direction = -self.gridlength_in_x_direction
             self.scanmodeflags = _dec2bin(gdtmpl[18])[0:4]
             if gdtnum == 41:
-                self.latitude_of_southern_pole = scalefact*gdtmpl[19]/divisor
-                self.longitude_of_southern_pole = scalefact*gdtmpl[20]/divisor
+                self.latitude_of_southern_pole = scalefact*gdtmpl[19]
+                self.longitude_of_southern_pole = scalefact*gdtmpl[20]
                 self.angle_of_pole_rotation = gdtmpl[21]
         elif gdtnum == 50: # spectral coefficients.
             self.spectral_truncation_parameters = (gdtmpl[0],gdtmpl[1],gdtmpl[2])
