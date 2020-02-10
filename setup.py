@@ -23,7 +23,7 @@ setup (name = 'gripy',
            'Developmental repo for a python based grib reader. Replacing external deps with python''',
        packages = ['gripy', 'gripy.tables', 'gripy.legacy'],
        package_data={
-           "gripy.tables": ["*.json"],
+           "gripy.tables": ["*/*/*.json"],
            },
        cmdclass={'sdist': sdist},
       )
