@@ -44,27 +44,56 @@ class Section1:
     def __init__(self, data, *_):
         if data[1] != 1:
             raise ValueError(data)
-        print(data)
-        self.center = tables.centers[data[2]]
+        self.__data = data
+        self.__center = data[2]
+        self.decoded_data = {}
         self.subcenter = data[3]
         self.gMasterVersion = data[4]
         self.gLocalVersion = data[5]
-        self.significanceOfReferenceTime = data[6]
+        self.__significanceOfReferenceTime = data[6]
         self.year = data[7]
         self.month = data[8]
         self.day = data[9]
         self.hour = data[10]
         self.minute = data[11]
         self.second = data[12]
-        self.productionStatusOfProcessedData = data[13]
-        self.typeOfProcessedData = data[14]
+        self.__productionStatusOfProcessedData = data[13]
+        self.__typeOfProcessedData = data[14]
 
     def __repr__(self,):
-        return (f"Originating Center  : {self.center} - {self.subcenter} \n"
-                f"Grib Master Version: {self.gMasterVersion}.{self.gLocalVersion}\n"
-                f"Date               : {self.year}-{self.month:02}-{self.day:02}\n"
-                f"Time               : {self.hour:02}:{self.minute:02}:{self.second:02}\n"
+        return ("Section 1:\n"
+                f"  Originating Center : {self.center} - {self.subcenter} \n"
+                f"  Grib Master Version: {self.gMasterVersion}.{self.gLocalVersion}\n"
+                f"  Date               : {self.year}-{self.month:02}-{self.day:02}\n"
+                f"  Time               : {self.hour:02}:{self.minute:02}:{self.second:02}\n"
                 )
+
+    @property
+    def center(self, ):
+        if not 'center' in self.decoded_data:
+            self.decoded_data['center'] = tables.centers[self.__center]
+        return self.decoded_data['center']
+
+    @property
+    def significanceOfReferenceTime(self, ):
+        if not 'significanceOfReferenceTime' in self.decoded_data:
+            self.decoded_data['significanceOfReferenceTime'] = get_table_value('1.2',
+                                        self.__significanceOfReferenceTime)[0]
+        return self.decoded_data['significanceOfReferenceTime']
+
+    @property
+    def productionStatusOfProcessedData(self, ):
+        if not 'productionStatusOfProcessedData' in self.decoded_data:
+            self.decoded_data['productionStatusOfProcessedData'] = get_table_value('1.3',
+                                        self.__productionStatusOfProcessedData)[0]
+        return self.decoded_data['productionStatusOfProcessedData']
+
+    @property
+    def typeOfProcessedData(self, ):
+        if not 'typeOfProcessedData' in self.decoded_data:
+            self.decoded_data['typeOfProcessedData'] = get_table_value('1.4',
+                                        self.__typeOfProcessedData)[0]
+        return self.decoded_data['typeOfProcessedData']
 
 
 class Section2:
@@ -86,6 +115,11 @@ class Section4:
     def __init__(self, template, template_num, *_):
         self.template_num = template_num
         self.pds_template = template
+
+    def __repr__(self):
+        return ("Section 4:\n"
+                f"  template number  = {self.template_num}\n"
+                f"  template data    ={self.pds_template}\n")
 
 
 class Section5:
@@ -132,37 +166,22 @@ class Grib2Message:
         return (f"\tlongname                = {self.longname}\n"
                 f"\tunits                   = {self.units}\n"
                 f"\tshortname               = {self.shortname}\n"
-                f"\tGRIB2 Reference Time    = {self.significanceOfReferenceTime}\n"
+                f"\tGRIB2 Reference Time    = {self.section1.significanceOfReferenceTime}\n"
                 f"\tGRIB2 Discipline        = {self.discipline_name()}\n"
                 f"\tGRIB2 Category          = {self.category}\n"
-                f"\tGRIB2 Production Status = {self.productionStatusOfProcessedData}\n"
-                f"\tGRIB2 Data Type         = {self.typeOfProcessedData}\n"
+                f"\tGRIB2 Production Status = {self.section1.productionStatusOfProcessedData}\n"
+                f"\tGRIB2 Data Type         = {self.section1.typeOfProcessedData}\n"
                 )
 
     def decode_metadata(self):
-        table_dir = pathlib.Path(__file__).parent
-        with open(table_dir / f'tables/ncep/1/1.2.json') as json_file:
-            table = json.load(json_file)
-        self.significanceOfReferenceTime = table[str(self.section1.significanceOfReferenceTime)][0]
-        with open(table_dir / f'tables/ncep/1/1.3.json') as json_file:
-            table = json.load(json_file)
-        self.productionStatusOfProcessedData = table[str(self.section1.productionStatusOfProcessedData)][0]
-        with open(table_dir / f'tables/ncep/1/1.4.json') as json_file:
-            table = json.load(json_file)
-        self.typeOfProcessedData = table[str(self.section1.typeOfProcessedData)][0]
-
         pds_template = self.section4.pds_template
-        with open(table_dir / f'tables/ncep/4/4.1.json') as json_file:
-            table = json.load(json_file)
-        self.category = table[str(pds_template[0])]
+        self.category = get_table_value('4.1', pds_template[0])
         cat = pds_template[0]
-        with open(table_dir / f'tables/ncep/4/4.2.0.{cat}.json') as json_file:
-            table = json.load(json_file)
-        variable_data = table[str(pds_template[1])]
+        disc = self.discipline_int
+        variable_data = get_table_value(f'4.2.{disc}.{cat}', pds_template[1])
         self.shortname = variable_data[2]
         self.units = variable_data[1]
         self.longname = variable_data[0]
-        print(variable_data)
 
     def section_starting_position(self, section_num):
         pos = self.start_byte
@@ -249,3 +268,11 @@ class Grib2Message:
         flag = self.file_obj.read(4).decode('ascii','ignore')
         if flag != '7777':
             raise IOError('Grib2 Message not finished yet')
+
+
+def get_table_value(table, key):
+    table_dir = pathlib.Path(__file__).parent
+    maj = table[0]
+    with open(table_dir / f'tables/ncep/{maj}/{table}.json') as json_file:
+        table = json.load(json_file)
+    return table.get(str(key), None)

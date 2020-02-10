@@ -13,6 +13,13 @@ def get_test_gfs_grib():
     return grib_file
 
 
+def get_test_gfs42_grib():
+    data_dir = pathlib.Path(__file__).parent / 'data'
+    grib_file = data_dir / 'gfs.t12z.pgrb2.0p25.f042'
+    assert grib_file.exists()
+    return grib_file
+
+
 def get_test_nav_grib():
     data_dir = pathlib.Path(__file__).parent / 'data'
     grib_file = data_dir / 'navgem_2020020800f000.grib2'
@@ -65,6 +72,25 @@ def test_grib2_gfs_pds_decode():
     expected_longname = ['U-component of wind', 'V-component of wind']
     for expect, ret_msg in zip(expected_longname, msgs):
         assert expect == ret_msg.longname
+
+def test_grib2_gfs42_pds_decode():
+    grib_file = get_test_gfs42_grib()
+    with grib2.Grib2File(str(grib_file)) as g2:
+        g2.read_metadata()
+        msgs = g2.grib_msgs
+    assert len(msgs) == 1
+
+    expected_shortname = ['CLWMR']
+    for expect, ret_msg in zip(expected_shortname, msgs):
+        print(ret_msg)
+        print(ret_msg.section1)
+        print(ret_msg.section4)
+        assert expect == ret_msg.shortname
+
+    expected_longname = ['Cloud mixing ratio']
+    for expect, ret_msg in zip(expected_longname, msgs):
+        assert expect == ret_msg.longname
+
 
 
 def test_grib2_nav_pds_decode():
