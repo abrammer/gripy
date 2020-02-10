@@ -12,6 +12,12 @@ def get_test_gfs_grib():
     assert grib_file.exists()
     return grib_file
 
+def get_test_ngm_grib():
+    data_dir = pathlib.Path(__file__).parent / 'data'
+    grib_file = data_dir / 'navgem_2020020600f000.grib2'
+    assert grib_file.exists()
+    return grib_file
+
 
 def test_grib2decode_gfs_prod_def():
     grib_file = get_test_gfs_grib()
@@ -57,5 +63,13 @@ def test_grib2decode_gfs_values():
         assert expect['mean'] == pytest.approx(np.mean(values), abs=0.1)
 
 
+def test_grib2decode_ngm_latlon():
+    grib_file = get_test_ngm_grib()
+    msgs = py3grib2.Grib2Decode(str(grib_file))
+    for msg in msgs:
+        assert msg.latitude_first_gridpoint > -90.1
+        assert msg.latitude_last_gridpoint < 90.1
+
+
 if __name__ == '__main__':
-    pytest.main()
+    test_grib2decode_gfs_values()
