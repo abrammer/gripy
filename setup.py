@@ -21,6 +21,6 @@ setup (name = 'gripy',
        ext_modules = [lib,],
        description = '''Grib Reader In PYthon.,
            'Developmental repo for a python based grib reader. Replacing external deps with python''',
-       packages = ['gripy', 'gripy.legacy',],
+       packages = ['gripy', 'gripy.legacy', 'gripy.tables'],
        cmdclass={'sdist': sdist},
       )
