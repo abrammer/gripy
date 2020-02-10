@@ -12,7 +12,7 @@ try:
 except ImportError:
     from io import BytesIO as StringIO
 
-import numpy as np 
+import numpy as np
 from numpy import ma
 
 from gripy import g2pylib
@@ -313,11 +313,6 @@ def _getieeeint(i):
     ra = g2pylib.itor_ieee(ia)
     return ra[0]
 
-def _isString(string):
-    """Test if string is a string like object if not return 0 """
-    try: string + ''
-    except: return 0
-    else: return 1
 
 class Grib2Message:
     """
@@ -412,11 +407,11 @@ class Grib2Message:
  @ivar proj4_: instance variables with this prefix are used to set the map projection
  parameters for U{PROJ.4<http://proj.maptools.org>}.
     """
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         """
- create a Grib2Decode class instance given a GRIB Edition 2 filename.
+        create a Grib2Decode class instance given a GRIB Edition 2 filename.
 
- (used by L{Grib2Decode} function - not directly called by user)
+        (used by L{Grib2Decode} function - not directly called by user)
         """
         for k,v in kwargs.items():
             setattr(self,k,v)
@@ -431,17 +426,17 @@ class Grib2Message:
             if earthR == 'Reserved': earthR = None
         else:
             earthR = None
-        if _isString(earthR) and (earthR.startswith('Reserved') or earthR=='Missing'):
+        if isinstance(earthR, str) and (earthR.startswith('Reserved') or earthR=='Missing'):
             self.shape_of_earth = earthR
             self.earthRminor = None
             self.earthRmajor = None
-        elif _isString(earthR) and earthR.startswith('Spherical'):
+        elif isinstance(earthR, str) and earthR.startswith('Spherical'):
             self.shape_of_earth = earthR
             scaledearthR = gdtmpl[2]
             earthRscale = gdtmpl[1]
             self.earthRmajor = math.pow(10,-earthRscale)*scaledearthR
             self.earthRminor = self.earthRmajor
-        elif _isString(earthR) and earthR.startswith('OblateSpheroid'):
+        elif isinstance(earthR, str) and earthR.startswith('OblateSpheroid'):
             self.shape_of_earth = earthR
             scaledearthRmajor = gdtmpl[4]
             earthRmajorscale = gdtmpl[3]
@@ -451,7 +446,7 @@ class Grib2Message:
             earthRminorscale = gdtmpl[5]
             self.earthRminor = math.pow(10,-earthRminorscale)*scaledearthRminor
             self.earthRminor = self.earthRminor*1000. # convert to m from km
-        elif _isString(earthR) and earthR.startswith('WGS84'):
+        elif isinstance(earthR, str) and earthR.startswith('WGS84'):
             self.shape_of_earth = earthR
             self.earthRmajor = 6378137.0
             self.earthRminor = 6356752.3142
@@ -572,9 +567,8 @@ class Grib2Message:
             # general case of 'near-side perspective projection' (untested)
             else:
                 self.proj4_proj = 'nsper'
-                msg = """
-only geostationary perspective is supported.
-lat/lon values returned by grid method may be incorrect."""
+                msg = ("only geostationary perspective is supported."
+                " lat/lon values returned by grid method may be incorrect.")
                 warnings.warn(msg)
             # latitude of horizon on central meridian
             lonmax = 90.-(180./np.pi)*np.arcsin(self.earthRmajor/self.proj4_h)
@@ -625,28 +619,27 @@ lat/lon values returned by grid method may be incorrect."""
 
     def data(self,fill_value=9.9692099683868690e+36,masked_array=True,expand=True,order=None):
         """
- returns an unpacked data grid.  Can also be accomplished with L{values}
- property.
+        returns an unpacked data grid.  Can also be accomplished with L{values}
+        property.
 
- @keyword fill_value: missing or masked data is filled with this value
- (default 9.9692099683868690e+36).
+        @keyword fill_value: missing or masked data is filled with this value
+        (default 9.9692099683868690e+36).
 
- @keyword masked_array: if True, return masked array if there is bitmap
- for missing or masked data (default True).
+        @keyword masked_array: if True, return masked array if there is bitmap
+        for missing or masked data (default True).
 
- @keyword expand:  if True (default), ECMWF 'reduced' gaussian grids are
- expanded to regular gaussian grids.
+        @keyword expand:  if True (default), ECMWF 'reduced' gaussian grids are
+        expanded to regular gaussian grids.
 
- @keyword order: if 1, linear interpolation is used for expanding reduced
- gaussian grids.  if 0, nearest neighbor interpolation is used. Default
- is 0 if grid has missing or bitmapped values, 1 otherwise.
+        @keyword order: if 1, linear interpolation is used for expanding reduced
+        gaussian grids.  if 0, nearest neighbor interpolation is used. Default
+        is 0 if grid has missing or bitmapped values, 1 otherwise.
 
- @return: C{B{data}}, a float32 numpy regular or masked array
- with shape (nlats,lons) containing the requested grid.
+        @return: C{B{data}}, a float32 numpy regular or masked array
+        with shape (nlats,lons) containing the requested grid.
         """
         # make sure scan mode is supported.
         # if there is no 'scanmodeflags', then grid is not supported.
-        from redtoreg import _redtoreg
         if not hasattr(self,'scanmodeflags'):
             raise ValueError('unsupported grid definition template number %s'%self.grid_definition_template_number)
         else:
@@ -670,7 +663,7 @@ lat/lon values returned by grid method may be incorrect."""
         except (ValueError,TypeError,IOError):
             f = StringIO(self._grib_filename)
         f.seek(self._grib_message_byteoffset)
-        gribmsg = f.read(self._grib_message_length)
+        gribmsg = memoryview(f.read(self._grib_message_length))
         f.close()
         gdtnum = self.grid_definition_template_number
         gdtmpl = self.grid_definition_template
@@ -707,6 +700,7 @@ lat/lon values returned by grid method may be incorrect."""
                 fld = np.reshape(fld,(ny,nx))
         else:
             if gdsinfo[2] and gdtnum == 40: # ECMWF 'reduced' global gaussian grid.
+                from redtoreg import _redtoreg
                 if expand:
                     nx = 2*ny
                     lonsperlat = self.grid_definition_list
@@ -743,13 +737,13 @@ lat/lon values returned by grid method may be incorrect."""
 
     def grid(self):
         """
- return lats,lons (in degrees) of grid.
- currently can handle reg. lat/lon, global gaussian, mercator, stereographic,
- lambert conformal, albers equal-area, space-view and azimuthal
- equidistant grids.  L{latlons} method does the same thing.
+        return lats,lons (in degrees) of grid.
+        currently can handle reg. lat/lon, global gaussian, mercator, stereographic,
+        lambert conformal, albers equal-area, space-view and azimuthal
+        equidistant grids.  L{latlons} method does the same thing.
 
- @return: C{B{lats},B{lons}}, float32 numpy arrays
- containing latitudes and longitudes of grid (in degrees).
+        @return: C{B{lats},B{lons}}, float32 numpy arrays
+        containing latitudes and longitudes of grid (in degrees).
         """
         gdsinfo = self.grid_definition_info
         gdtnum = self.grid_definition_template_number
@@ -799,7 +793,8 @@ lat/lon values returned by grid method may be incorrect."""
             projparams['proj'] = 'cyl'
             lons,lats = np.meshgrid(lons,lats) # make 2-d arrays
         # mercator, lambert conformal, stereographic, albers equal area, azimuthal equidistant
-        elif gdtnum in [10,20,30,31,110]:
+        elif gdtnum in [10, 20, 30, 31, 110]:
+            import pyproj
             nx = self.points_in_x_direction
             ny = self.points_in_y_direction
             dx = self.gridlength_in_x_direction
@@ -871,7 +866,7 @@ lat/lon values returned by grid method may be incorrect."""
         self.projparams = projparams
         return lats.astype('f'), lons.astype('f')
 
-def Grib2Decode(filename,gribmsg=False):
+def Grib2Decode(filename, gribmsg=False):
     """
  Read the contents of a GRIB2 file.
 
@@ -897,10 +892,10 @@ def Grib2Decode(filename,gribmsg=False):
     disciplines = []
     startingpos = []
     msglen = []
-    while 1:
+    while True:
         # find next occurence of string 'GRIB' (or EOF).
         nbyte = f.tell()
-        while 1:
+        while True:
             f.seek(nbyte)
             start = f.read(4).decode('ascii','ignore')
             if start == '' or start == 'GRIB': break
@@ -908,21 +903,20 @@ def Grib2Decode(filename,gribmsg=False):
         if start == '': break # at EOF
         # otherwise, start (='GRIB') contains indicator message (section 0)
         startpos = f.tell()-4
-        f.seek(2,1)  # next two octets are reserved
+        f.seek(2, 1)  # next two octets are reserved
         # get discipline info.
         disciplines.append(struct.unpack('>B',f.read(1))[0])
         # check to see it's a grib edition 2 file.
-        vers = struct.unpack('>B',f.read(1))[0]
+        vers = struct.unpack('>B', f.read(1))[0]
         if vers != 2:
             raise IOError('not a GRIB2 file (version number %d)' % vers)
         lengrib = struct.unpack('>q',f.read(8))[0]
         msglen.append(lengrib)
         startingpos.append(startpos)
-        # read in entire grib message.
-        f.seek(startpos)
-        gribmsg = f.read(lengrib)
+        # we read 16 octets above, and need 4 at the end of the message
+        f.seek(lengrib-20, 1)
         # make sure the message ends with '7777'
-        end = gribmsg[-4:lengrib].decode('ascii','ignore')
+        end = f.read(4).decode('ascii','ignore')
         if end != '7777':
            raise IOError('partial GRIB message (no "7777" at end)')
         # do next message.
@@ -938,7 +932,7 @@ def Grib2Decode(filename,gribmsg=False):
         gribmsg = f.read(msglen[n])
         pos = 0
         numflds = 0
-        while 1:
+        while True:
             if gribmsg[pos:pos+4].decode('ascii','ignore') == 'GRIB':
                 sectnum = 0
                 lensect = 16
@@ -1004,7 +998,7 @@ def Grib2Decode(filename,gribmsg=False):
         bitmaps = []
         sxn7pos = []
         localsxns = []
-        while 1:
+        while True:
             # check to see if this is the end of the message.
             if gribmsg[pos:pos+4].decode('ascii','ignore') == '7777': break
             lensect = struct.unpack('>i',gribmsg[pos:pos+4])[0]
@@ -1078,7 +1072,7 @@ def Grib2Decode(filename,gribmsg=False):
         localsxn.append(_repeatlast(numfields[n],localsxns))
         msgstart.append(_repeatlast(numfields[n],[spos]))
         msglength.append(_repeatlast(numfields[n],[lengrib]))
-        identsect.append(_repeatlast(numfields[n],[idsect]))
+        identsect.append(_repeatlast(numfields[n],[idsect[2:]]))
         discipline.append(_repeatlast(numfields[n],[discipl]))
 
     gdtnum = _flatten(gdtnum)
@@ -1141,6 +1135,7 @@ def Grib2Decode(filename,gribmsg=False):
     else:
         return gribs
 
+
 def dump(filename, grbs):
     """
  write the given L{Grib2Message} instances to a grib file.
@@ -1162,48 +1157,6 @@ def dump(filename, grbs):
 
 # private methods and functions below here.
 
-def _getdate(idsect):
-    """return yyyy,mm,dd,min,ss from section 1"""
-    yyyy=idsect[5]
-    mm=idsect[6]
-    dd=idsect[7]
-    hh=idsect[8]
-    min=idsect[9]
-    ss=idsect[10]
-    return yyyy,mm,dd,hh,min,ss
-
-def _unpack1(gribmsg,pos):
-    """unpack section 1 given starting point in bytes
-    used to test pyrex interface to g2_unpack1"""
-    idsect = []
-    pos = pos + 5
-    idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    pos = pos + 2
-    idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    pos = pos + 2
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    pos = pos + 2
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    pos = pos + 1
-    return np.array(idsect,'i'),pos
 
 def _repeatlast(numfields,listin):
     """repeat last item in listin, until len(listin) = numfields"""

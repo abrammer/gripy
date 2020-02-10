@@ -1,4 +1,9 @@
 venv*
 *ipynb*
 *pycache*
-*gfs.t12*
+.vscode
+.benchmarks
+.pytest_cache
+build/
+*.egg-info
+*.so

@@ -1,0 +1,32 @@
+{
+    "0": [
+        "Analysis products"
+    ],
+    "1": [
+        "Forecast products"
+    ],
+    "2": [
+        "Analysis and forecast products"
+    ],
+    "3": [
+        "Control forecast products"
+    ],
+    "4": [
+        "Perturbed forecast products"
+    ],
+    "5": [
+        "Control and perturbed forecast products"
+    ],
+    "6": [
+        "Processed satellite observations"
+    ],
+    "7": [
+        "Processed radar observations"
+    ],
+    "8": [
+        "Event Probability"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

@@ -1,9 +1,10 @@
 import struct
 
 import numpy as np
-import pupygrib
 
-from gripy.comunpack import comunpack
+# from gripy.comunpack import comunpack
+from gripy.libg2 import comunpack
+from gripy import binary
 
 
 def mkieee(num):
@@ -285,15 +286,15 @@ def pds_template(template_number):
 
 def get_pp_bits(buf, offset, nbits):
     formats = {
-        -1:pupygrib.binary.unpack_int8_from,
-        -2:pupygrib.binary.unpack_int16_from,
-        -3:pupygrib.binary.unpack_int24_from,
-        -4:pupygrib.binary.unpack_int32_from,
-        1:pupygrib.binary.unpack_uint8_from,
-        2:pupygrib.binary.unpack_uint16_from,
-        3:pupygrib.binary.unpack_uint24_from,
-        4:pupygrib.binary.unpack_uint32_from,
-        5:pupygrib.binary.unpack_uint64_from,
+        -1: binary.unpack_int8_from,
+        -2: binary.unpack_int16_from,
+        -3: binary.unpack_int24_from,
+        -4: binary.unpack_int32_from,
+        1: binary.unpack_uint8_from,
+        2: binary.unpack_uint16_from,
+        3: binary.unpack_uint24_from,
+        4: binary.unpack_uint32_from,
+        5: binary.unpack_uint64_from,
     }
     bits = formats[nbits](buf, offset)
     return bits
@@ -316,41 +317,13 @@ def get_format(nbits):
     return f">{format_str}"
 
 
-def unpack1(gribmsg,pos):
+def unpack1(gribmsg, pos, y=None):
     """unpack section 1 given starting point in bytes
     used to test pyrex interface to g2_unpack1"""
     header = struct.unpack_from('>IBhhBBBhBBBBBBB', gribmsg, pos)
     # length, secnum, center_id, subcenter, grib_table, gribaug_table, timesig,\
     #     year, mm,dd,hh,mn, ss, prod_status, data_type, extra = header
-    # idsect = []
-    # pos = pos + 5
-    # idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    # pos = pos + 2
-    # idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    # pos = pos + 2
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>h',gribmsg[pos:pos+2])[0])
-    # pos = pos + 2
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    # idsect.append(struct.unpack('>B',gribmsg[pos:pos+1])[0])
-    # pos = pos + 1
-    return np.array(header[2:],dtype=np.int32), pos+header[0]
+    return np.array(header,dtype=np.int32), pos+header[0]
 
 
 def unpack3(buff, pos, y):
@@ -450,6 +423,7 @@ def unpack7(gribmessage, gdtnum, gdtmpl,drtnum, drtmpl,ndpts,ipos, zeros,printmi
     fld = g2_unpack7(gribmessage, ipos, gdtnum, gdtmpl, drtnum, drtmpl, ndpts)
     return fld
 
+
 def g2_unpack7(cgrib, iofst, igdsnum, igdstmpl, idrsnum, idrstmpl, ngpts):
     lensec, isecnum = struct.unpack_from('>IB', cgrib, iofst)
     # octet_cnt = int((lensec-5))
@@ -463,7 +437,11 @@ def g2_unpack7(cgrib, iofst, igdsnum, igdstmpl, idrsnum, idrstmpl, ngpts):
     elif (idrsnum == 2) or (idrsnum == 3):
         # print("cgrib:", len(cgrib[iofst+5:]))
         # raise NotImplementedError('comunpack is not support yet, sorry :/ ')
+#         grb_int = np.frombuffer(cgrib[iofst+5:], dtype=np.uint8)
+#         memview = memoryview(cgrib[iofst+5:])
+#         fld, ier = comunpack(grb_int, lensec, idrsnum, idrstmpl, ngpts)
         fld = comunpack(cgrib[iofst+5:], lensec, idrsnum, idrstmpl, ngpts)
+#         print(ier)
 #         fld = comunpack(bit_buff, lensec, idrsnum, idrstmpl, ngpts)
     elif (idrsnum == 50):           # Spectral Simple
         # simunpack(cgrib[ipos:],idrstmpl,ndpts-1,lfld+1)
