@@ -1,0 +1,23 @@
+{
+    "0": [
+        "Experimental"
+    ],
+    "1": [
+        "Initial operational version number"
+    ],
+    "2": [
+        "Previous operational version number"
+    ],
+    "3": [
+        "Current operational version number implemented on 2 November 2005"
+    ],
+    "4": [
+        "Version Implemented on 7 November 2007"
+    ],
+    "5": [
+        "Pre-operational to be implemented by next amendment"
+    ],
+    "255": [
+        "Master tables not used. Local table entries and local templates may use the entire range of the table, not just those sections marked Reserved for local used."
+    ]
+}
