@@ -271,8 +271,11 @@ class Grib2Message:
 
 
 def get_table_value(table, key):
-    table_dir = pathlib.Path(__file__).parent
-    maj = table[0]
-    with open(table_dir / f'tables/ncep/{maj}/{table}.json') as json_file:
-        table = json.load(json_file)
-    return table.get(str(key), None)
+    table_data = tables.table4.get(table, None)
+    if table_data is None:
+        maj = table[0]
+        table_dir = pathlib.Path(__file__).parent
+        with open(table_dir / f'tables/ncep/{maj}/{table}.json') as json_file:
+            table_data = json.load(json_file)
+            tables.table4[table] = table_data
+    return table_data.get(str(key), None)
