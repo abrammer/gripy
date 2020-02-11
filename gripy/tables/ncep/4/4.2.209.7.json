@@ -1,0 +1,32 @@
+{
+    "0": [
+        "Model Surface Temperature [RAP 13km]",
+        "C",
+        "ModelSurfaceTemp"
+    ],
+    "1": [
+        "Model Surface Wet Bulb Temperature [RAP 13km]",
+        "C",
+        "ModelWetBulbTemp"
+    ],
+    "2": [
+        "Probability of Warm Rain [RAP 13km derived]",
+        "%",
+        "WarmRainProbability"
+    ],
+    "3": [
+        "Model Freezing Level Height [RAP 13km]",
+        "m",
+        "ModelHeight0C"
+    ],
+    "4": [
+        "Brightband Top Radar [RAP 13km derived]",
+        "m",
+        "BrightBandTopHeight"
+    ],
+    "5": [
+        "Brightband Bottom Radar [RAP 13km derived]",
+        "m",
+        "BrightBandBottomHeight"
+    ]
+}

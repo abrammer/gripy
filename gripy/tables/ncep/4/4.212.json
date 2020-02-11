@@ -1,0 +1,44 @@
+{
+    "1": [
+        "Urban land"
+    ],
+    "2": [
+        "Agricultural"
+    ],
+    "3": [
+        "Range land"
+    ],
+    "4": [
+        "Deciduous forest"
+    ],
+    "5": [
+        "Coniferous forest"
+    ],
+    "6": [
+        "Forest/wetland"
+    ],
+    "7": [
+        "Water"
+    ],
+    "8": [
+        "Wetlands"
+    ],
+    "9": [
+        "Desert"
+    ],
+    "10": [
+        "Tundra"
+    ],
+    "11": [
+        "Ice"
+    ],
+    "12": [
+        "Tropical forest"
+    ],
+    "13": [
+        "Savannah"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

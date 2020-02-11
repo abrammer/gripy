@@ -1,0 +1,14 @@
+{
+    "0": [
+        "Contrail not present"
+    ],
+    "1": [
+        "Contrail present"
+    ],
+    "254": [
+        "Reserved for local use"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

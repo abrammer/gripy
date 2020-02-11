@@ -1,0 +1,32 @@
+{
+    "0": [
+        "Aerosol type",
+        "Code Table 4.205",
+        "AEROT"
+    ],
+    "192": [
+        "Particulate matter (coarse)",
+        "mcg m-3",
+        "PMTC"
+    ],
+    "193": [
+        "Particulate matter (fine)",
+        "mcg m-3",
+        "PMTF"
+    ],
+    "194": [
+        "Particulate matter (fine)",
+        "log10(mcg m-3)",
+        "LPMTF"
+    ],
+    "195": [
+        "Integrated column particulate matter (fine)",
+        "log10(mcg m-3)",
+        "LIPMF"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

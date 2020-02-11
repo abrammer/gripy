@@ -1,0 +1,42 @@
+{
+    "0": [
+        "Integrated solar irradiance",
+        " W m-2",
+        "TSI"
+    ],
+    "1": [
+        "Solar X-ray flux (XRS long)",
+        "W m-2",
+        "XLONG"
+    ],
+    "2": [
+        "Solar X-ray flux (XRS short)",
+        "W m-2",
+        "XSHORT"
+    ],
+    "3": [
+        "Solar EUV irradiance",
+        "W m-2",
+        "EUVIRR"
+    ],
+    "4": [
+        "Solar spectral irradiance",
+        "W m-2 nm-1",
+        "SPECIRR"
+    ],
+    "5": [
+        "F10.7",
+        "W m-2 Hz-1",
+        "F107"
+    ],
+    "6": [
+        "Solar radio emissions",
+        "W m-2 Hz-1",
+        "SOLRF"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

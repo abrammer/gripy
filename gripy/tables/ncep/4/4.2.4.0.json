@@ -1,0 +1,37 @@
+{
+    "0": [
+        "Temperature",
+        "K",
+        "TMP"
+    ],
+    "1": [
+        "Electron temperature",
+        "K",
+        "ELECTMP"
+    ],
+    "2": [
+        "Proton temperature",
+        "K",
+        "PROTTMP"
+    ],
+    "3": [
+        "Ion temperature",
+        "K",
+        "IONTMP"
+    ],
+    "4": [
+        "Parallel temperature",
+        "K",
+        "PRATMP"
+    ],
+    "5": [
+        "Perpendicular temperature",
+        "K",
+        "PRPTMP"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

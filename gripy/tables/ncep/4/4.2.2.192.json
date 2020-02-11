@@ -1,0 +1,22 @@
+{
+    "192": [
+        "Fire outlook critical risk area",
+        "%",
+        "FIRECRA"
+    ],
+    "193": [
+        "Fire outlook extreme critical risk area",
+        "%",
+        "FIREXCRA"
+    ],
+    "194": [
+        "Fire outlook dry lightning area",
+        "%",
+        "FIREDLA"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

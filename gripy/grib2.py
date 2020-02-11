@@ -33,11 +33,9 @@ class Grib2File:
             # otherwise, start (='GRIB') contains indicator message (section 0)
             startpos = self.file_obj.tell()-4
             self.grib_msgs.append(Grib2Message(self.file_obj, startpos))
-            print(self.grib_msgs[-1].section1.center)
         # if no grib messages found, nmsg is still 0 and it's not GRIB.
         if not self.grib_msgs:
             raise IOError('not a GRIB file')
-        return nmsg
 
 
 class Section1:
@@ -130,7 +128,10 @@ class Section5:
 
 class Section6:
     def __init__(self, bmap, bmapflag):
-        self.bmap = bmap
+        if bmapflag == 0:
+            self.bmap = bmap.astype('B')
+        else:
+            self.bmap = None
         self.bmapflag = bmapflag
 
 
@@ -257,7 +258,6 @@ class Grib2Message:
         startpos = self.section_starting_position(n)
         self.file_obj.seek(startpos)
         lensect, sectnum = struct.unpack('>IB', self.file_obj.read(5))
-        print(sectnum, lensect)
         self.section_lengths[n] = lensect
         return Section7(self.file_obj, startpos)
 

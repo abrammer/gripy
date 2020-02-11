@@ -1,0 +1,12 @@
+{
+    "0": [
+        "WSR-88D 3D Reflectivity Mosaic - 33 CAPPIS (500-19000m)",
+        "dBZ",
+        "CONUSMergedReflectivityQC"
+    ],
+    "1": [
+        "All Radar 3D Reflectivity Mosaic - 33 CAPPIS (500-19000m)",
+        "dBZ",
+        "CONUSPlusMergedReflectivityQC"
+    ]
+}

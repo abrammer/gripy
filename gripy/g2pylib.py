@@ -349,9 +349,10 @@ def unpack3(buff, pos, y):
 
     deflist = np.array([], dtype=np.int32)
     if num_oct != 0 or gdtmpl['needext']:
+        pass
         # TODO: Implement Section 3 Template Extensions
         # TODO: Implement Section 3 Optional List Numbers
-        print("Not supported")
+        # print("Not supported")
 
     return igds, np.array(template, dtype=np.int32), deflist,  pos+length,
 
@@ -372,9 +373,10 @@ def unpack4(buff, pos, y):
         template.append(get_pp_bits(buff, off, nbyte))
         off += abs(nbyte)
     if nvals != 0 or pdstmpl['needext']:
+        pass
         # TODO: Implement Section 4 Template Extensions
         # TODO: Implement Section 4 Optional Coords
-        print("Not supported")
+        # print("Not supported")
     return np.array(template, dtype=np.int32), template_num, np.array([], dtype=np.int32), pos+length
 
 

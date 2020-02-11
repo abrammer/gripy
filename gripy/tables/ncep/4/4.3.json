@@ -1,0 +1,77 @@
+{
+    "0": [
+        "Analysis"
+    ],
+    "1": [
+        "Initialization"
+    ],
+    "2": [
+        "Forecast"
+    ],
+    "3": [
+        "Bias corrected forecast"
+    ],
+    "4": [
+        "Ensemble forecast"
+    ],
+    "5": [
+        "Probability forecast"
+    ],
+    "6": [
+        "Forecast error"
+    ],
+    "7": [
+        "Analysis error"
+    ],
+    "8": [
+        "Observation"
+    ],
+    "9": [
+        "Climatological"
+    ],
+    "10": [
+        "Probability-weighted forecast"
+    ],
+    "11": [
+        "Bias-corrected ensemble forecast"
+    ],
+    "12": [
+        "Post-processed Analysis"
+    ],
+    "13": [
+        "Post-processed Forecast"
+    ],
+    "14": [
+        "Nowcast"
+    ],
+    "15": [
+        "Hindcast"
+    ],
+    "16": [
+        "Physical Retrieval"
+    ],
+    "17": [
+        "Regression Analysis"
+    ],
+    "18": [
+        "Difference Between Two Forecasts"
+    ],
+    "192": [
+        "Forecast confidence indicator"
+    ],
+    "193": [
+        "Probability-matched mean"
+    ],
+    "194": [
+        "Neighborhood probability"
+    ],
+    "195": [
+        "Bias-Corrected and Downscaled Ensemble Forecast"
+    ],
+    "196": [
+        "Perturbed Analysis for Ensemble Initialization"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

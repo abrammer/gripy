@@ -1,0 +1,27 @@
+{
+    "0": [
+        "Limb intensity",
+        "m-2 s-1",
+        "LMBINT"
+    ],
+    "1": [
+        "Disk intensity",
+        "m-2 s-1",
+        "DSKINT"
+    ],
+    "2": [
+        "Disk intensity day",
+        "m-2 s-1",
+        "DSKDAY"
+    ],
+    "3": [
+        "Disk intensity night",
+        "m-2 s-1",
+        "DSKNGT"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

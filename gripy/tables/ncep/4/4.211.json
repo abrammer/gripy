@@ -1,0 +1,14 @@
+{
+    "0": [
+        "Low bypass"
+    ],
+    "1": [
+        "High bypass"
+    ],
+    "2": [
+        "Non bypass"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

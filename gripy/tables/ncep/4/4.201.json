@@ -1,0 +1,20 @@
+{
+    "1": [
+        "Rain"
+    ],
+    "2": [
+        "Thunderstorm"
+    ],
+    "3": [
+        "Freezing rain"
+    ],
+    "4": [
+        "Mixed/ice"
+    ],
+    "5": [
+        "Snow"
+    ],
+    "255": [
+        "Missing"
+    ]
+}
