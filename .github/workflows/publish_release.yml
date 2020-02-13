@@ -27,5 +27,8 @@ jobs:
         build-requirements: ''
         package-path: ''
     - name: Publish wheels to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
-        twine upload -u __token__ -p ${{ secrets.PYPI_PASSWORD }} --repository-url https://test.pypi.org/legacy/ wheelhouse/gripy*-manylinux*.whl
+        twine upload -u ${{TWINE_USERNAME}} -p ${{ TWINE_PASSWORD }} --repository-url https://test.pypi.org/legacy/ wheelhouse/gripy*-manylinux*.whl
