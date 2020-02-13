@@ -5,6 +5,7 @@ on: push
 jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    runs-on: ubuntu-latest
     uses: docker://quay.io/pypa/manylinux1_x86_64
     steps:
     - uses: actions/checkout@master
