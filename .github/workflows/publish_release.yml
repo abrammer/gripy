@@ -26,8 +26,6 @@ jobs:
         python-versions: 'cp36-cp36m cp37-cp37m'
         build-requirements: ''
         package-path: ''
-    - name: get rid of the numpy wheels
-      run: rm -rf wheelhouse/numpy*
     - uses: actions/upload-artifact@v1
       with:
         name: wheelhouse
