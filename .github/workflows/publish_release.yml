@@ -7,18 +7,28 @@ jobs:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: Set up Python 3.7
+    - uses: actions/checkout@v2
+    - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
-    - name: Run build_wheels steps
-      uses: docker://quay.io/pypa/manylinux1_x86_64
-      # run: |
-      #   yum install -y atlas-devel;
-      #   for PYBIN in /opt/python/*/bin; do
-      #     "${PYBIN}/pip" wheel ./ -w wheelhouse/
-      #   done;
-      #   for whl in wheelhouse/*.whl; do
-      #     auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
-      #   done;
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        #  pip install twine flake8
+    # - name: Lint with flake8 for syntax errors
+    #   run: |
+    #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Build manylinux Python wheels
+      uses: RalfG/python-wheels-manylinux-build@v0.2-manylinux2010_x86_64
+      with:
+        python-versions: 'cp36-cp36m cp37-cp37m'
+        build-requirements: 'numpy'
+        package-path: ''
+    # - name: Publish wheels to PyPI
+    #   env:
+    #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+    #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    #   run: |
+    #     twine upload wheelhouse/*-manylinux*.whl
