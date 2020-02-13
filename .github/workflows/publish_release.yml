@@ -1,0 +1,23 @@
+name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+
+on: push
+
+jobs:
+  build-n-publish:
+    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    runs-on: docker://quay.io/pypa/manylinux1_x86_64
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Run build_wheels steps
+      run: |
+        yum install -y atlas-devel;
+        for PYBIN in /opt/python/*/bin; do
+          "${PYBIN}/pip" wheel ./ -w wheelhouse/
+        done;
+        for whl in wheelhouse/*.whl; do
+          auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+        done;
