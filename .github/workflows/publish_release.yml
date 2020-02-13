@@ -34,7 +34,7 @@ jobs:
         name: wheelhouse
         path: wheelhouse
     - name: Publish wheels to PyPI
-      if: github.ref == 'refs/heads/master'
+      if: github.event.base_ref == 'refs/heads/master'
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
