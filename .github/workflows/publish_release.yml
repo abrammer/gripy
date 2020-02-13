@@ -6,7 +6,6 @@ jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-latest
-    uses: docker://quay.io/pypa/manylinux1_x86_64
     steps:
     - uses: actions/checkout@master
     - name: Set up Python 3.7
@@ -14,6 +13,7 @@ jobs:
       with:
         python-version: 3.7
     - name: Run build_wheels steps
+      uses: docker://quay.io/pypa/manylinux1_x86_64
       run: |
         yum install -y atlas-devel;
         for PYBIN in /opt/python/*/bin; do
