@@ -14,11 +14,11 @@ jobs:
         python-version: 3.7
     - name: Run build_wheels steps
       uses: docker://quay.io/pypa/manylinux1_x86_64
-      run: |
-        yum install -y atlas-devel;
-        for PYBIN in /opt/python/*/bin; do
-          "${PYBIN}/pip" wheel ./ -w wheelhouse/
-        done;
-        for whl in wheelhouse/*.whl; do
-          auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
-        done;
+      # run: |
+      #   yum install -y atlas-devel;
+      #   for PYBIN in /opt/python/*/bin; do
+      #     "${PYBIN}/pip" wheel ./ -w wheelhouse/
+      #   done;
+      #   for whl in wheelhouse/*.whl; do
+      #     auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+      #   done;
