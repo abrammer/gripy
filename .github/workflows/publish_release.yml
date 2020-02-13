@@ -26,7 +26,12 @@ jobs:
         python-versions: 'cp36-cp36m cp37-cp37m'
         build-requirements: ''
         package-path: ''
+    - uses: actions/upload-artifact@v1
+      with:
+        name: wheelhouse
+        path: wheelhouse
     - name: Publish wheels to PyPI
+      if: startsWith(github.event.ref, 'refs/tags')
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
