@@ -1,0 +1,26 @@
+{
+    "0": [
+        "Unweighted mean of all members"
+    ],
+    "1": [
+        "Weighted mean of all members"
+    ],
+    "2": [
+        "Standard deviation with respect to cluster mean"
+    ],
+    "3": [
+        "Standard deviation with respect to cluster mean, normalized"
+    ],
+    "4": [
+        "Spread of all members"
+    ],
+    "5": [
+        "Large anomaly index of all members"
+    ],
+    "6": [
+        "Unweighted mean of the cluster members"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "0": [
+        "Unperturbed high-resolution control forecast"
+    ],
+    "1": [
+        "Unperturbed low-resolution control forecast"
+    ],
+    "2": [
+        "Negatively perturbed forecast"
+    ],
+    "3": [
+        "Positively perturbed forecast"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

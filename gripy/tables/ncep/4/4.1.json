@@ -1,27 +1,77 @@
 {
-    "0":"Temperature",
-    "1":"Moisture",
-    "2":"Momentum",
-    "3":"Mass",
-    "4":"Short wave radiation",
-    "5":"Long wave radiation",
-    "6":"Cloud",
-    "7":"Thermodynamic stability indicies",
-    "8":"Kinematic stability indicies",
-    "9":"Temperature probabilities",
-    "10":"Moisture probabilities",
-    "11":"Momentum probabilities",
-    "12":"Mass probabilities",
-    "13":"Aerosols",
-    "14":"Trace gases (e.g. Ozone, CO2)",
-    "15":"Radar",
-    "16":"Forecast radar imagery",
-    "17":"Electrodynamics",
-    "18":"Nuclear/radiology",
-    "19":"Physical atmospheric properties",
-    "20":"Atmospheric chemical Constituents",
-    "190":"CCITT IA5 string",
-    "191":"Miscellaneous",
-    "192":"Covariance",
-    "255":"Missing"
+    "0": [
+        "Temperature"
+    ],
+    "1": [
+        "Moisture"
+    ],
+    "2": [
+        "Momentum"
+    ],
+    "3": [
+        "Mass"
+    ],
+    "4": [
+        "Short wave radiation"
+    ],
+    "5": [
+        "Long wave radiation"
+    ],
+    "6": [
+        "Cloud"
+    ],
+    "7": [
+        "Thermodynamic stability indicies"
+    ],
+    "8": [
+        "Kinematic stability indicies"
+    ],
+    "9": [
+        "Temperature probabilities"
+    ],
+    "10": [
+        "Moisture probabilities"
+    ],
+    "11": [
+        "Momentum probabilities"
+    ],
+    "12": [
+        "Mass probabilities"
+    ],
+    "13": [
+        "Aerosols"
+    ],
+    "14": [
+        "Trace gases (e.g. Ozone, CO2)"
+    ],
+    "15": [
+        "Radar"
+    ],
+    "16": [
+        "Forecast radar imagery"
+    ],
+    "17": [
+        "Electrodynamics"
+    ],
+    "18": [
+        "Nuclear/radiology"
+    ],
+    "19": [
+        "Physical atmospheric properties"
+    ],
+    "20": [
+        "Atmospheric chemical Constituents"
+    ],
+    "190": [
+        "CCITT IA5 string"
+    ],
+    "191": [
+        "Miscellaneous"
+    ],
+    "192": [
+        "Covariance"
+    ],
+    "255": [
+        "Missing"
+    ]
 }

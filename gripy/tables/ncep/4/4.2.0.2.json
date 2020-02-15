@@ -9,6 +9,46 @@
         "m s-1",
         "WIND"
     ],
+    "2": [
+        "U-component of wind",
+        "m s-1",
+        "UGRD"
+    ],
+    "3": [
+        "V-component of wind",
+        "m s-1",
+        "VGRD"
+    ],
+    "4": [
+        "Stream function",
+        "m2 s-1",
+        "STRM"
+    ],
+    "5": [
+        "Velocity potential",
+        "m2 s-1",
+        "VPOT"
+    ],
+    "6": [
+        "Montgomery stream function",
+        "m2 s-2",
+        "MNTSF"
+    ],
+    "7": [
+        "Sigma coordinate vertical velocity",
+        "s-1",
+        "SGCVV"
+    ],
+    "8": [
+        "Vertical velocity (pressure)",
+        "Pa s-1",
+        "VVEL"
+    ],
+    "9": [
+        "Vertical velocity (geometric)",
+        "m s-1",
+        "DZDT"
+    ],
     "10": [
         "Absolute vorticity",
         "s-1",
@@ -59,190 +99,20 @@
         "J",
         "WMIXE"
     ],
-    "192": [
-        "Vertical speed shear",
-        "s-1",
-        "VWSH"
-    ],
-    "193": [
-        "Horizontal momentum flux",
-        "N m-2",
-        "MFLX"
-    ],
-    "194": [
-        "U-component storm motion",
-        "m s-1",
-        "USTM"
-    ],
-    "195": [
-        "V-component storm motion",
-        "m s-1",
-        "VSTM"
-    ],
-    "196": [
-        "Drag coefficient",
-        "non-dim",
-        "CD"
-    ],
-    "197": [
-        "Frictional velocity",
-        "m s-1",
-        "FRICV"
-    ],
-    "198": [
-        "Latitude of u wind component of velocity",
-        "deg",
-        "LAUV"
-    ],
-    "199": [
-        "Longitude of u wind component of velocity",
-        "deg",
-        "LOUV"
-    ],
-    "2": [
-        "U-component of wind",
-        "m s-1",
-        "UGRD"
-    ],
     "20": [
         "Boundary layer dissipation",
         "W m-2",
         "BLYDP"
-    ],
-    "200": [
-        "Latitude of v wind component of velocity",
-        "deg",
-        "LAVV"
-    ],
-    "201": [
-        "Longitude of v wind component of velocity",
-        "deg",
-        "LOVV"
-    ],
-    "202": [
-        "Latitude of presure point",
-        "deg",
-        "LAPP"
-    ],
-    "203": [
-        "Longitude of presure point",
-        "deg",
-        "LOPP"
-    ],
-    "204": [
-        "Vertical eddy diffusivity heat exchange",
-        "m2 s-1",
-        "VEDH"
-    ],
-    "205": [
-        "Covariance between meridional and zonal components of the wind.",
-        "m2 s-2",
-        "COVMZ"
-    ],
-    "206": [
-        "Covariance between temperature and zonal components of the wind.",
-        "K m s-1",
-        "COVTZ"
-    ],
-    "207": [
-        "Covariance between temperature and meridional components of the wind.",
-        "K m s-1",
-        "COVTM"
-    ],
-    "208": [
-        "Vertical diffusion zonal acceleration",
-        "m s-2",
-        "VDFUA"
-    ],
-    "209": [
-        "Vertical diffusion meridional acceleration",
-        "m s-2",
-        "VDFVA"
     ],
     "21": [
         "Maximum wind speed",
         "m s-1",
         "MAXGUST"
     ],
-    "210": [
-        "Gravity wave drag zonal acceleration",
-        "m s-2",
-        "GWDU"
-    ],
-    "211": [
-        "Gravity wave drag meridional acceleration",
-        "m s-2",
-        "GWDV"
-    ],
-    "212": [
-        "Convective zonal momentum mixing acceleration",
-        "m s-2",
-        "CNVU"
-    ],
-    "213": [
-        "Convective meridional momentum mixing acceleration",
-        "m s-2",
-        "CNVV"
-    ],
-    "214": [
-        "Tendency of vertical velocity",
-        "m s-2",
-        "WTEND"
-    ],
-    "215": [
-        "Omega (Dp/Dt) divide by density",
-        "K",
-        "OMGALF"
-    ],
-    "216": [
-        "Convective gravity wave drag zonal acceleration",
-        "m s-2",
-        "CNGWDU"
-    ],
-    "217": [
-        "Convective gravity wave drag meridional acceleration",
-        "m s-2",
-        "CNGWDV"
-    ],
-    "218": [
-        "Velocity point model surface",
-        "-",
-        "LMV"
-    ],
-    "219": [
-        "Potential vorticity (mass-weighted)",
-        "s-1 m-1",
-        "PVMWW"
-    ],
     "22": [
         "Wind speed (gust)",
         "m s-1",
         "GUST"
-    ],
-    "220": [
-        "Hourly maximum of upward vertical velocity in the lowest 400hPa",
-        "m s-1",
-        "MAXUVV"
-    ],
-    "221": [
-        "Hourly maximum of downward vertical velocity in the lowest 400hPa",
-        "m s-1",
-        "MAXDVV"
-    ],
-    "222": [
-        "U component of hourly maximum 10m wind speed",
-        "m s-1",
-        "MAXUW"
-    ],
-    "223": [
-        "V component of hourly maximum 10m wind speed",
-        "m s-1",
-        "MAXVW"
-    ],
-    "224": [
-        "Ventilation rate",
-        "m2 s-1",
-        "VRATE"
     ],
     "23": [
         "U-component of wind (gust)",
@@ -258,11 +128,6 @@
         "Vertical speed shear",
         "s-1",
         "VWSH"
-    ],
-    "255": [
-        "Missing",
-        "-",
-        ""
     ],
     "26": [
         "Horizontal momentum flux",
@@ -283,11 +148,6 @@
         "Drag coefficient",
         "numeric",
         "CD"
-    ],
-    "3": [
-        "V-component of wind",
-        "m s-1",
-        "VGRD"
     ],
     "30": [
         "Frictional velocity",
@@ -339,11 +199,6 @@
         "m s-2",
         "EWTPARM"
     ],
-    "4": [
-        "Stream function",
-        "m2 s-1",
-        "STRM"
-    ],
     "40": [
         "Northward wind tendency due to parameterizations",
         "m s-2",
@@ -379,29 +234,174 @@
         "s-2",
         "VORTADV"
     ],
-    "5": [
-        "Velocity potential",
-        "m2 s-1",
-        "VPOT"
-    ],
-    "6": [
-        "Montgomery stream function",
-        "m2 s-2",
-        "MNTSF"
-    ],
-    "7": [
-        "Sigma coordinate vertical velocity",
+    "192": [
+        "Vertical speed shear",
         "s-1",
-        "SGCVV"
+        "VWSH"
     ],
-    "8": [
-        "Vertical velocity (pressure)",
-        "Pa s-1",
-        "VVEL"
+    "193": [
+        "Horizontal momentum flux",
+        "N m-2",
+        "MFLX"
     ],
-    "9": [
-        "Vertical velocity (geometric)",
+    "194": [
+        "U-component storm motion",
         "m s-1",
-        "DZDT"
+        "USTM"
+    ],
+    "195": [
+        "V-component storm motion",
+        "m s-1",
+        "VSTM"
+    ],
+    "196": [
+        "Drag coefficient",
+        "non-dim",
+        "CD"
+    ],
+    "197": [
+        "Frictional velocity",
+        "m s-1",
+        "FRICV"
+    ],
+    "198": [
+        "Latitude of u wind component of velocity",
+        "deg",
+        "LAUV"
+    ],
+    "199": [
+        "Longitude of u wind component of velocity",
+        "deg",
+        "LOUV"
+    ],
+    "200": [
+        "Latitude of v wind component of velocity",
+        "deg",
+        "LAVV"
+    ],
+    "201": [
+        "Longitude of v wind component of velocity",
+        "deg",
+        "LOVV"
+    ],
+    "202": [
+        "Latitude of presure point",
+        "deg",
+        "LAPP"
+    ],
+    "203": [
+        "Longitude of presure point",
+        "deg",
+        "LOPP"
+    ],
+    "204": [
+        "Vertical eddy diffusivity heat exchange",
+        "m2 s-1",
+        "VEDH"
+    ],
+    "205": [
+        "Covariance between meridional and zonal components of the wind.",
+        "m2 s-2",
+        "COVMZ"
+    ],
+    "206": [
+        "Covariance between temperature and zonal components of the wind.",
+        "K m s-1",
+        "COVTZ"
+    ],
+    "207": [
+        "Covariance between temperature and meridional components of the wind.",
+        "K m s-1",
+        "COVTM"
+    ],
+    "208": [
+        "Vertical diffusion zonal acceleration",
+        "m s-2",
+        "VDFUA"
+    ],
+    "209": [
+        "Vertical diffusion meridional acceleration",
+        "m s-2",
+        "VDFVA"
+    ],
+    "210": [
+        "Gravity wave drag zonal acceleration",
+        "m s-2",
+        "GWDU"
+    ],
+    "211": [
+        "Gravity wave drag meridional acceleration",
+        "m s-2",
+        "GWDV"
+    ],
+    "212": [
+        "Convective zonal momentum mixing acceleration",
+        "m s-2",
+        "CNVU"
+    ],
+    "213": [
+        "Convective meridional momentum mixing acceleration",
+        "m s-2",
+        "CNVV"
+    ],
+    "214": [
+        "Tendency of vertical velocity",
+        "m s-2",
+        "WTEND"
+    ],
+    "215": [
+        "Omega (Dp/Dt) divide by density",
+        "K",
+        "OMGALF"
+    ],
+    "216": [
+        "Convective gravity wave drag zonal acceleration",
+        "m s-2",
+        "CNGWDU"
+    ],
+    "217": [
+        "Convective gravity wave drag meridional acceleration",
+        "m s-2",
+        "CNGWDV"
+    ],
+    "218": [
+        "Velocity point model surface",
+        "-",
+        "LMV"
+    ],
+    "219": [
+        "Potential vorticity (mass-weighted)",
+        "s-1 m-1",
+        "PVMWW"
+    ],
+    "220": [
+        "Hourly maximum of upward vertical velocity in the lowest 400hPa",
+        "m s-1",
+        "MAXUVV"
+    ],
+    "221": [
+        "Hourly maximum of downward vertical velocity in the lowest 400hPa",
+        "m s-1",
+        "MAXDVV"
+    ],
+    "222": [
+        "U component of hourly maximum 10m wind speed",
+        "m s-1",
+        "MAXUW"
+    ],
+    "223": [
+        "V component of hourly maximum 10m wind speed",
+        "m s-1",
+        "MAXVW"
+    ],
+    "224": [
+        "Ventilation rate",
+        "m2 s-1",
+        "VRATE"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
     ]
 }

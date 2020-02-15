@@ -1,0 +1,22 @@
+{
+    "0": [
+        "Pederson conductivity",
+        "S m-1",
+        "SIGPED"
+    ],
+    "1": [
+        "Hall conductivity",
+        "S m-1",
+        "SIGHAL"
+    ],
+    "2": [
+        "Parallel conductivity",
+        "S m-1",
+        "SIGPAR"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

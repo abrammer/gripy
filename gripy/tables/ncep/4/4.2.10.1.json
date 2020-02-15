@@ -1,0 +1,47 @@
+{
+    "0": [
+        "Current direction",
+        "Degree True",
+        "DIRC"
+    ],
+    "1": [
+        "Current speed",
+        "m s-1",
+        "SPC"
+    ],
+    "2": [
+        "U-component of current",
+        "m s-1",
+        "UOGRD"
+    ],
+    "3": [
+        "V-component of current",
+        "m s-1",
+        "VOGRD"
+    ],
+    "192": [
+        "Ocean mixed layer u velocity",
+        "m s-1",
+        "OMLU"
+    ],
+    "193": [
+        "Ocean mixed layer v velocity",
+        "m s-1",
+        "OMLV"
+    ],
+    "194": [
+        "Barotropic u velocity",
+        "m s-1",
+        "UBARO"
+    ],
+    "195": [
+        "Barotropic v velocity",
+        "m s-1",
+        "VBARO"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

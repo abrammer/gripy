@@ -1,0 +1,122 @@
+{
+    "0": [
+        "Water temperature",
+        "K",
+        "WTMP"
+    ],
+    "1": [
+        "Deviation of sea level from mean",
+        "m",
+        "DSLM"
+    ],
+    "2": [
+        "Heat exchange coefficient",
+        "non-dim",
+        "CH"
+    ],
+    "192": [
+        "Hurricane storm surge",
+        "m",
+        "SURGE"
+    ],
+    "193": [
+        "Extra tropical storm surge",
+        "m",
+        "ETSRG"
+    ],
+    "194": [
+        "Ocean surface elevation relative to geoid",
+        "m",
+        "ELEV"
+    ],
+    "195": [
+        "Sea surface height relative to geoid",
+        "m",
+        "SSHG"
+    ],
+    "196": [
+        "Ocean mixed layer potential density (reference 2000m)",
+        "kg m-3",
+        "P2OMLT"
+    ],
+    "197": [
+        "Net air-ocean heat flux",
+        "W m-2",
+        "AOHFLX"
+    ],
+    "198": [
+        "Assimilative heat flux",
+        "W m-2",
+        "ASHFL"
+    ],
+    "199": [
+        "Surface temperature trend",
+        "degree per day",
+        "SSTT"
+    ],
+    "200": [
+        "Surface salinity trend",
+        "psu per day",
+        "SSST"
+    ],
+    "201": [
+        "Kinetic energy",
+        "J kg-1",
+        "KENG"
+    ],
+    "202": [
+        "Salt flux",
+        "kg m-2s-1",
+        "SLTFL"
+    ],
+    "203": [
+        "Heat exchange coefficient",
+        "non-dim",
+        "LCH"
+    ],
+    "242": [
+        "20% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG20"
+    ],
+    "243": [
+        "30% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG30"
+    ],
+    "244": [
+        "40% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG40"
+    ],
+    "245": [
+        "50% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG50"
+    ],
+    "246": [
+        "60% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG60"
+    ],
+    "247": [
+        "70% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG70"
+    ],
+    "248": [
+        "80% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG80"
+    ],
+    "249": [
+        "90% tropical cyclone storm surge exceedance",
+        "m",
+        "TCSRG90"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

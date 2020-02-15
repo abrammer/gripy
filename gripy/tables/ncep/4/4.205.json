@@ -1,0 +1,11 @@
+{
+    "0": [
+        "Aerosol not present"
+    ],
+    "1": [
+        "Aerosol present"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

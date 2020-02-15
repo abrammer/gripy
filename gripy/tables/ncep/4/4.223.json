@@ -1,0 +1,18 @@
+{
+    "": [],
+    "0": [
+        "No Fire Detected"
+    ],
+    "1": [
+        "Possible Fire Detected"
+    ],
+    "2": [
+        "Probable Fire Detected"
+    ],
+    "3": [
+        "Missing"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

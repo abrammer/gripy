@@ -1,0 +1,17 @@
+{
+    "0": [
+        "Clear over water"
+    ],
+    "1": [
+        "Clear over land"
+    ],
+    "2": [
+        "Cloud"
+    ],
+    "3": [
+        "No data"
+    ],
+    "255": [
+        "Missing"
+    ]
+}

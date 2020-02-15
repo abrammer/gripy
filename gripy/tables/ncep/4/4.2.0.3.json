@@ -1,0 +1,318 @@
+{
+    "0": [
+        "Pressure",
+        "Pa",
+        "PRES"
+    ],
+    "1": [
+        "Pressure reduced to MSL",
+        "Pa",
+        "PRMSL"
+    ],
+    "2": [
+        "Pressure tendency",
+        "Pa s-1",
+        "PTEND"
+    ],
+    "3": [
+        "ICAO standard atmosphere reference height",
+        "m",
+        "ICAHT"
+    ],
+    "4": [
+        "Geopotential",
+        "m2 s-2",
+        "GP"
+    ],
+    "5": [
+        "Geopotential height",
+        "gpm",
+        "HGT"
+    ],
+    "6": [
+        "Geometric height",
+        "m",
+        "DIST"
+    ],
+    "7": [
+        "Standard deviation of height",
+        "m",
+        "HSTDV"
+    ],
+    "8": [
+        "Pressure anomaly",
+        "Pa",
+        "PRESA"
+    ],
+    "9": [
+        "Geopotential height anomaly",
+        "gpm",
+        "GPA"
+    ],
+    "10": [
+        "Density",
+        "kg m-3",
+        "DEN"
+    ],
+    "11": [
+        "Altimeter setting",
+        "Pa",
+        "ALTS"
+    ],
+    "12": [
+        "Thickness",
+        "m",
+        "THICK"
+    ],
+    "13": [
+        "Pressure altitude",
+        "m",
+        "PRESALT"
+    ],
+    "14": [
+        "Density altitude",
+        "m",
+        "DENALT"
+    ],
+    "15": [
+        "5-wave geopotential height",
+        "gpm",
+        "5WAVH"
+    ],
+    "16": [
+        "Zonal flux of gravity wave stress",
+        "N m-2",
+        "UGWD"
+    ],
+    "17": [
+        "Meridional flux of gravity wave stress",
+        "N m-2",
+        "VGWD"
+    ],
+    "18": [
+        "Planetary boundary layer height",
+        "m",
+        "HPBL"
+    ],
+    "19": [
+        "5-wave geopotential height anomaly",
+        "gpm",
+        "5WAVA"
+    ],
+    "20": [
+        "Standard deviation of sub-grid scale orography",
+        "m",
+        "SDSGSO"
+    ],
+    "21": [
+        "Angle of sub-grid scale orography",
+        "rad",
+        "AOSGSO"
+    ],
+    "22": [
+        "Slope of sub-grid scale orography",
+        "Numeric",
+        "SSGSO"
+    ],
+    "23": [
+        "Gravity wave dissipation",
+        "W m-2",
+        "GWD"
+    ],
+    "24": [
+        "Anisotropy of sub-grid scale orography",
+        "Numeric",
+        "ASGSO"
+    ],
+    "25": [
+        "Natural logarithm of pressure in pa",
+        "Numeric",
+        "NLPRES"
+    ],
+    "26": [
+        "Exner pressure",
+        "Numeric",
+        "EXPRES"
+    ],
+    "27": [
+        "Updraught mass flux",
+        "kg m-2 s-1",
+        "UMFLX"
+    ],
+    "28": [
+        "Downdraught mass flux",
+        "kg m-2 s-1",
+        "DMFLX"
+    ],
+    "29": [
+        "Updraught detrainment rate",
+        "kg m-3 s-1",
+        "UDRATE"
+    ],
+    "30": [
+        "Downdraught detrainment rate",
+        "kg m-3 s-1",
+        "DDRATE"
+    ],
+    "31": [
+        "Unbalanced Component of Logarithm of Surface Pressure",
+        "Numeric",
+        "UCLSPRS"
+    ],
+    "192": [
+        "MSLP (ETA model reduction)",
+        "Pa",
+        "MSLET"
+    ],
+    "193": [
+        "5-wave geopotential height",
+        "gpm",
+        "5WAVH"
+    ],
+    "194": [
+        "Zonal flux of gravity wave stress",
+        "N m-2",
+        "UGWD"
+    ],
+    "195": [
+        "Meridional flux of gravity wave stress",
+        "N m-2",
+        "VGWD"
+    ],
+    "196": [
+        "Planetary boundary layer height",
+        "m",
+        "HPBL"
+    ],
+    "197": [
+        "5-wave geopotential height anomaly",
+        "gpm",
+        "5WAVA"
+    ],
+    "198": [
+        "MSLP (MAPS system reduction)",
+        "Pa",
+        "MSLMA"
+    ],
+    "199": [
+        "3-hr pressure tendency (std. atmos. reduction)",
+        "Pa s-1",
+        "TSLSA"
+    ],
+    "200": [
+        "Pressure of level from which parcel was lifted",
+        "Pa",
+        "PLPL"
+    ],
+    "201": [
+        "X-gradient of log pressure",
+        "m-1",
+        "LPSX"
+    ],
+    "202": [
+        "Y-gradient of log pressure",
+        "m-1",
+        "LPSY"
+    ],
+    "203": [
+        "X-gradient of height",
+        "m-1",
+        "HGTX"
+    ],
+    "204": [
+        "Y-gradient of height",
+        "m-1",
+        "HGTY"
+    ],
+    "205": [
+        "Layer thickness",
+        "m",
+        "LAYTH"
+    ],
+    "206": [
+        "Natural log of surface pressure",
+        "ln(kPa)",
+        "NLGSP"
+    ],
+    "207": [
+        "Convective updraft mass flux",
+        "kg m-2 s-1",
+        "CNVUMF"
+    ],
+    "208": [
+        "Convective downdraft mass flux",
+        "kg m-2 s-1",
+        "CNVDMF"
+    ],
+    "209": [
+        "Convective detrainment mass flux",
+        "kg m-2 s-1",
+        "CNVDEMF"
+    ],
+    "210": [
+        "Mass point model surface",
+        "-",
+        "LMH"
+    ],
+    "211": [
+        "Geopotential height (nearest grid point)",
+        "gpm",
+        "HGTN"
+    ],
+    "212": [
+        "Pressure (nearest grid point)",
+        "Pa",
+        "PRESN"
+    ],
+    "213": [
+        "Orographic convexity",
+        "-",
+        "ORCONV"
+    ],
+    "214": [
+        "Orographic asymmetry, w component",
+        "-",
+        "ORASW"
+    ],
+    "215": [
+        "Orographic asymmetry, s component",
+        "-",
+        "ORASS"
+    ],
+    "216": [
+        "Orographic asymmetry, sw component",
+        "-",
+        "ORASSW"
+    ],
+    "217": [
+        "Orographic asymmetry, nw component",
+        "-",
+        "ORASNW"
+    ],
+    "218": [
+        "Orographic length scale, w component",
+        "-",
+        "ORLSW"
+    ],
+    "219": [
+        "Orographic length scale, s component",
+        "-",
+        "ORLSS"
+    ],
+    "220": [
+        "Orographic length scale, sw component",
+        "-",
+        "ORLSSW"
+    ],
+    "221": [
+        "Orographic length scale, nw component",
+        "-",
+        "ORLSNW"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ],
+    "": []
+}

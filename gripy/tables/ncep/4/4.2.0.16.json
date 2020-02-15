@@ -1,0 +1,72 @@
+{
+    "0": [
+        "Equivalent radar reflectivity factor for rain",
+        "mm6 m-3",
+        "REFZR"
+    ],
+    "1": [
+        "Equivalent radar reflectivity factor for snow",
+        "mm6 m-3",
+        "REFZI"
+    ],
+    "2": [
+        "Equivalent radar reflectivity factor for parameterized convection",
+        "mm6 m-3",
+        "REFZC"
+    ],
+    "3": [
+        "Echo top",
+        "m",
+        "RETOP"
+    ],
+    "4": [
+        "Reflectivity",
+        "dB",
+        "REFD"
+    ],
+    "5": [
+        "Composite reflectivity",
+        "dB",
+        "REFC"
+    ],
+    "192": [
+        "Equivalent radar reflectivity factor for rain",
+        "mm6 m-3",
+        "REFZR"
+    ],
+    "193": [
+        "Equivalent radar reflectivity factor for snow",
+        "mm6 m-3",
+        "REFZI"
+    ],
+    "194": [
+        "Equivalent radar reflectivity factor for parameterized convection",
+        "mm6 m-3",
+        "REFZC"
+    ],
+    "195": [
+        "Reflectivity",
+        "dB",
+        "REFD"
+    ],
+    "196": [
+        "Composite reflectivity",
+        "dB",
+        "REFC"
+    ],
+    "197": [
+        "Echo top",
+        "m",
+        "RETOP"
+    ],
+    "198": [
+        "Hourly maximum of simulated reflectivity at 1 km AGL",
+        "dB",
+        "MAXREF"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "0": [
+        "Arbitrary text string",
+        "CCITTIA5",
+        "ARBTXT"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

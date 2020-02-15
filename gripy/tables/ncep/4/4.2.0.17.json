@@ -1,0 +1,22 @@
+{
+    "0": [
+        "Lightning strike density",
+        "m-2 s-1",
+        "LTNGSD"
+    ],
+    "1": [
+        "Lightning Potential Index (LPI)",
+        "J kg-1",
+        "LTPINX"
+    ],
+    "192": [
+        "Lightning",
+        "non-dim",
+        "LTNG"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

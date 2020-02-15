@@ -1,0 +1,47 @@
+{
+    "0": [
+        "Magnetic field magnitude",
+        "T",
+        "BTOT"
+    ],
+    "1": [
+        "First vector component of magnetic field",
+        "T",
+        "BVEC1"
+    ],
+    "2": [
+        "Second vector component of magnetic field",
+        "T",
+        "BVEC2"
+    ],
+    "3": [
+        "Third vector component of magnetic field",
+        "T",
+        "BVEC3"
+    ],
+    "4": [
+        "Electric field magnitude",
+        "V m-1",
+        "ETOT"
+    ],
+    "5": [
+        "1st vector component of electric field",
+        "V m-1",
+        "EVEC1"
+    ],
+    "6": [
+        "2nd vector component of electric field",
+        "V m-1",
+        "EVEC2"
+    ],
+    "7": [
+        "3rd vector component of electric field",
+        "V m-1",
+        "EVEC3"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}

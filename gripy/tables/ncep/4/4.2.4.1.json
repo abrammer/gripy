@@ -1,0 +1,27 @@
+{
+    "0": [
+        "Velocity magnitude (speed)",
+        "m s-1",
+        "SPEED"
+    ],
+    "1": [
+        "First vector component of velocity (coordinate system dependent)",
+        "m s-1",
+        "VEL1"
+    ],
+    "2": [
+        "Second vector component of velocity (coordinate system dependent)",
+        "m s-1",
+        "VEL2"
+    ],
+    "3": [
+        "Third vector component of velocity (coordinate system dependent)",
+        "m s-1",
+        "VEL3"
+    ],
+    "255": [
+        "Missing",
+        "-",
+        ""
+    ]
+}
