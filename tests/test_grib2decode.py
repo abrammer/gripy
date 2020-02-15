@@ -6,6 +6,7 @@ import numpy as np
 from gripy.legacy import py3grib2
 from gripy import grib2
 
+
 def get_test_gfs_grib():
     data_dir = pathlib.Path(__file__).parent / 'data'
     grib_file = data_dir / 'gfs.t12z.pgrb2.0p25.f000.grb'
