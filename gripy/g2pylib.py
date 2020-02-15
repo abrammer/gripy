@@ -2,8 +2,8 @@ import struct
 
 import numpy as np
 
-# from gripy.comunpack import comunpack
-from gripy.legacy.libg2 import comunpack
+# from gripy.legacy.comunpack import comunpack
+from gripy.libg2 import comunpack
 from gripy import binary
 
 
