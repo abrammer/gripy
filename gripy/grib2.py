@@ -19,9 +19,6 @@ class Grib2File:
     def __exit__(self, type, value, traceback):
         self.file_obj.close()
 
-    def read_metadata():
-        pass
-
     def fetch_messages(self):
         # loop over grib messages, read section 0, get entire grib message.
         while True:
