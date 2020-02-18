@@ -25,5 +25,5 @@ jobs:
       run: |
         ls -ltr tests/data
         conda install -c conda-forge cfgrib pygrib
-        pip install gripy
+        pip install .
         python benchmarks/read_gfs.py
