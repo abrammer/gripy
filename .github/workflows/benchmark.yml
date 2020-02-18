@@ -26,6 +26,7 @@ jobs:
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python }}
+    - name: run shell commands
       run: |
         ls -ltr tests/data
         conda install -c conda-forge cfgrib pygrib
