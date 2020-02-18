@@ -3,7 +3,7 @@ name: gripy Unit Tests
 on:
   push
   # schedule:
-  #   - cron:  '*/15 * * * *'
+  #   - cron:  '0 0 * * *'
 
 jobs:
   unit_tests:
@@ -23,8 +23,8 @@ jobs:
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python }}
-    - name: Conda info
-      shell: conda install cfgrib pygrib
+      - name: Conda info
+        shell: conda install cfgrib pygrib
     - name: install gripy
       shell: pip install gripy
     - name: Run Benchmark
