@@ -21,7 +21,12 @@ jobs:
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python }}
-    - shell: bash -l {0}
+
+    - name: ubuntu install fortran
+      run: sudo apt install gfortran
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: run install and tests
       run: |
         ls -ltr tests/data
         conda install -c conda-forge cfgrib pygrib
