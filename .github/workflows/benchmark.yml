@@ -1,0 +1,31 @@
+name: gripy Unit Tests
+
+on:
+  push
+  # schedule:
+  #   - cron:  '*/15 * * * *'
+
+jobs:
+  unit_tests:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ]
+        python: [3.6, 3.7,]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python }}
+    - uses: goanpeca/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+        python-version: ${{ matrix.python }}
+    - name: Conda info
+      shell: conda install cfgrib pygrib
+    - name: install gripy
+      shell: pip install gripy
+    - name: Run Benchmark
+      run: python benchmarks/read_gfs.py

@@ -11,6 +11,7 @@ class Grib2File:
     def __init__(self, filename):
         self.file_obj = open(filename, 'rb')
         self.grib_msgs = []
+        self.fetch_messages()
 
     def __enter__(self):
         return self
@@ -18,7 +19,10 @@ class Grib2File:
     def __exit__(self, type, value, traceback):
         self.file_obj.close()
 
-    def read_metadata(self):
+    def decode_metadata():
+        pass
+
+    def fetch_messages(self):
         # loop over grib messages, read section 0, get entire grib message.
         while True:
             # find next occurence of string 'GRIB' (or EOF).
