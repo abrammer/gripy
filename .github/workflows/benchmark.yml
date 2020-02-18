@@ -1,4 +1,4 @@
-name: gripy Unit Tests
+name: gripy becnhmark Tests
 
 on:
   push
@@ -15,7 +15,7 @@ jobs:
         python: [3.6, 3.7,]
     steps:
     - uses: actions/checkout@v1
-      uses: goanpeca/setup-miniconda@v1
+    - uses: goanpeca/setup-miniconda@v1
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python }}
