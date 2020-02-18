@@ -19,7 +19,7 @@ class Grib2File:
     def __exit__(self, type, value, traceback):
         self.file_obj.close()
 
-    def decode_metadata():
+    def read_metadata():
         pass
 
     def fetch_messages(self):
