@@ -40,14 +40,14 @@ def benchmark_output(method, time_s):
 
 if __name__ == "__main__":
     n = 10
-    gripy_time = timeit.timeit("gripy_test()",
-                               number=n,
-                               setup="from __main__ import gripy_test")
-    print(benchmark_output("gripy", gripy_time/n))
     pygrib_time = timeit.timeit("pygrib_test()",
                                 number=n,
                                 setup="from __main__ import pygrib_test")
     print(benchmark_output("pygrib", pygrib_time/n))
+    gripy_time = timeit.timeit("gripy_test()",
+                               number=n,
+                               setup="from __main__ import gripy_test")
+    print(benchmark_output("gripy", gripy_time/n))
     cfgrib_time = timeit.timeit("cfgrib_test()",
                                 number=n,
                                 setup="from __main__ import cfgrib_test")

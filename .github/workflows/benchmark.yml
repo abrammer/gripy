@@ -23,6 +23,7 @@ jobs:
         python-version: ${{ matrix.python }}
     - shell: bash -l {0}
       run: |
+        ls -ltr tests/data
         conda install -c conda-forge cfgrib pygrib
         pip install gripy
         python benchmarks/read_gfs.py
