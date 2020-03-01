@@ -1,7 +1,7 @@
 name: gripy becnhmark Tests
 
 on:
-  push
+#  push
   # schedule:
   #   - cron:  '0 0 * * *'
 
