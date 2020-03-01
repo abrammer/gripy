@@ -1,0 +1,34 @@
+name: gripy becnhmark Tests
+
+on:
+  #  push
+   schedule:
+     - cron:  '0 0 1 * *'
+
+jobs:
+  unit_tests:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ]
+        python: [3.6, 3.7,]
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        lfs: True
+
+    - name: ubuntu install fortran
+      run: sudo apt install gfortran
+      if: matrix.os == 'ubuntu-latest'
+
+    - uses: goanpeca/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+        python-version: ${{ matrix.python }}
+    - shell: bash -l {0}
+      run: |
+        ls -ltr tests/data
+        conda install -c conda-forge cfgrib pygrib
+        pip install .
+        python benchmarks/read_gfs.py

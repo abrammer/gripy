@@ -976,10 +976,8 @@ def g2_unpack7(cgrib, iofst, igdsnum, igdstmpl, idrsnum, idrstmpl, ngpts):
         #         memview = memoryview(cgrib[iofst+5:])
         #         fld, ier = comunpack(grb_int, lensec, idrsnum, idrstmpl, ngpts)
         fld = comunpack(cgrib[iofst + 5:], lensec, idrsnum, idrstmpl, ngpts)
-
-
-#         print(ier)
-#         fld = comunpack(bit_buff, lensec, idrsnum, idrstmpl, ngpts)
+        # print(ier)
+        # fld = comunpack(bit_buff, lensec, idrsnum, idrstmpl, ngpts)
     elif (idrsnum == 50):  # Spectral Simple
         # simunpack(cgrib[ipos:],idrstmpl,ndpts-1,lfld+1)
         # rdieee(idrstmpl+4,lfld+0,1);
