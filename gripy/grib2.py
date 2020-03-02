@@ -111,6 +111,19 @@ class Section3:
         self.intepret = igds[3]
         self.template_num = igds[4]
         self.grid_template = grid_template
+        self.grid_data = g2pylib.grid_template(self.template_num)
+
+    @property
+    def grid_type(self):
+        return self.grid_data['name']
+
+    def __repr__(self):
+        return ("Section 3:\n"
+                f"  grid_source  = {self.grid_source}\n"
+                f"  ndpts        = {self.ndpts}\n"
+                f"  num_oct      = {self.num_oct}\n"
+                f"  template_num = {self.template_num}\n"
+                f"  grid_template= {self.grid_template}\n")
 
 
 class Section4:
