@@ -304,7 +304,7 @@ def grid_template(template_number):
             'mapdrs': [4, 1, -4, 1, 1, -4, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2]
         },
     }
-    return templatesgrid[template_number]
+    return templatesgrid.get(template_number, None)
 
 
 def drs_template(template_number):
