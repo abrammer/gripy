@@ -67,6 +67,8 @@ class Section1:
             f"  Grib Master Version: {self.gMasterVersion}.{self.gLocalVersion}\n"
             f"  Date               : {self.year}-{self.month:02}-{self.day:02}\n"
             f"  Time               : {self.hour:02}:{self.minute:02}:{self.second:02}\n"
+            f"  Prod. Status       : {self.__productionStatusOfProcessedData}\n"
+            f"  Data Type          : {self.__typeOfProcessedData}\n"
         )
 
     @property
@@ -92,7 +94,7 @@ class Section1:
 
     @property
     def typeOfProcessedData(self, ):
-        if 'typeOfProcessedData'not in self.decoded_data:
+        if 'typeOfProcessedData' not in self.decoded_data:
             self.decoded_data['typeOfProcessedData'] = get_table_value(
                 '1.4', self.__typeOfProcessedData)[0]
         return self.decoded_data['typeOfProcessedData']
@@ -104,13 +106,54 @@ class Section2:
 
 
 class Section3:
-    def __init__(self, igds, grid_template, *_):
-        self.grid_source = igds[0]
-        self.ndpts = igds[1]
-        self.num_oct = igds[2]
-        self.intepret = igds[3]
-        self.template_num = igds[4]
-        self.grid_template = grid_template
+    def __init__(self, buff):
+        self.data = buff
+        self.header = struct.unpack_from('>IBBIBBH', buff, 0)
+        self.grid_source = self.header[0]
+        self.ndpts = self.header[1]
+        self.num_oct = self.header[2]
+        self.intepret = self.header[3]
+        self.template_num = self.header[4]
+        self._template_data = None
+
+    @property
+    def template(self):
+        gdtmpl = g2pylib.grid_template(self.template_num)
+        if gdtmpl is None:
+            raise ValueError(
+                "Grib Table 3.{tnum} not found".format(tnum=self.template_num))
+            gdtmpl = {
+                'name': 'Unknown Grid',
+                'mapdrs': [],
+                'mapgridlen': 1,
+                'needext': 0
+            }
+        return gdtmpl
+
+    @property
+    def template_data(self, ):
+        if self._template_data is None:
+            gdtmpl = self.template
+            fmt = gdtmpl['mapdrs']
+            off = 14
+            self._template_data = []
+            for nbyte in fmt:
+                self._template_data.append(
+                    g2pylib.get_pp_bits(self.data, off, nbyte))
+                off += abs(nbyte)
+        return self._template_data
+
+    @property
+    def grid_type(self):
+        return self.template['name']
+
+    def __repr__(self):
+        return ("Section 3:\n"
+                f"  grid_source     : {self.grid_source}\n"
+                f"  ndpts           : {self.ndpts}\n"
+                f"  num_oct         : {self.num_oct}\n"
+                f"  template_num    : {self.template_num}\n"
+                f"  grid_template   : {self.template_data}\n")
 
 
 class Section4:
@@ -128,6 +171,11 @@ class Section5:
     def __init__(self, template, template_num, ndpts, pos):
         self.template_num = template_num
         self.drs_template = template
+
+    def __repr__(self, ):
+        return ("Section 5:\n"
+                f" template_num     : {self.template_num}\n"
+                f" drs template     : {self.drs_template}\n")
 
 
 class Section6:
@@ -159,7 +207,7 @@ class Grib2Message:
         self.read_section0()
         self.section1 = self.read_section_n(1)
         self.section2 = self.read_section_n(2)
-        self.section3 = self.read_section_n(3)
+        self.section3 = self.read_section3()
         self.section4 = self.read_section_n(4)
         self.section5 = self.read_section_n(5)
         self.section6 = self.read_section6()
@@ -256,6 +304,13 @@ class Grib2Message:
             return section[n]()
         self.section_lengths[n] = len(section_bytes)
         return section[n](*unpack[n](section_bytes, 0, []))
+
+    def read_section3(self, ):
+        n = 3
+        startpos = self.section_starting_position(n)
+        section_bytes, sectnum = self._get_section_bytes(startpos)
+        self.section_lengths[n] = len(section_bytes)
+        return Section3(section_bytes)
 
     def read_section6(self, ):
         n = 6

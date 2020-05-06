@@ -42,15 +42,16 @@ def rtoi_ieee(ra):
 
 def grid_template(template_number):
     templatesgrid = {
-        # 3.0: Lat/Lon grid
         0: {
+            'name': 'Lat/Lon grid',
             'mapgridlen': 19,
             'needext': 0,
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, 4, -4, 4, 1, -4, 4, 4, 4, 1]
         },
-        # 3.1: Rotated Lat/Lon grid
         1: {
+            'name':
+            'Rotated Lat/Lon grid',
             'mapgridlen':
             22,
             'needext':
@@ -60,8 +61,9 @@ def grid_template(template_number):
                 4, 4
             ]
         },
-        # 3.2: Stretched Lat/Lon grid
         2: {
+            'name':
+            'Stretched Lat/Lon grid',
             'mapgridlen':
             22,
             'needext':
@@ -71,8 +73,9 @@ def grid_template(template_number):
                 4, -4
             ]
         },
-        # 3.3: Stretched & Rotated Lat/Lon grid
         3: {
+            'name':
+            'Stretched & Rotated Lat/Lon grid',
             'mapgridlen':
             25,
             'needext':
@@ -83,20 +86,21 @@ def grid_template(template_number):
             ]
         },
         # Added GDT 3.4,3.5    (08/05/2013)
-        # 3.4: Variable resolution Latitude/Longitude
         4: {
+            'name': 'Variable resolution Latitude/Longitude',
             'mapgridlen': 13,
             'needext': 1,
             'mapdrs': [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, 4, 1, 1]
         },
-        # 3.5: Variable resolution rotate Latitude/Longitude
         5: {
+            'name': 'Variable resolution rotate Latitude/Longitude',
             'mapgridlen': 16,
             'needext': 1,
             'mapdrs': [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, 4, 1, 1, -4, 4, 4]
         },
-        # 3.12: Transverse Mercator
         12: {
+            'name':
+            'Transverse Mercator',
             'mapgridlen':
             22,
             'needext':
@@ -106,33 +110,34 @@ def grid_template(template_number):
                 -4, -4
             ]
         },
-        # 3.101: General unstructured grid
         101: {
+            'name': 'General unstructured grid',
             'mapgridlen': 4,
             'needext': 0,
             'mapdrs': [1, 4, 1, -4]
         },
-        # 3.140: Lambert Azimuthal Equal Area Projection
         140: {
+            'name': 'Lambert Azimuthal Equal Area Projection',
             'mapgridlen': 17,
             'needext': 0,
             'mapdrs': [1, 1, 4, 1, 4, 1, 4, 4, 4, -4, 4, 4, 4, 1, 4, 4, 1]
         },
-        # 3.10: Mercator
         10: {
+            'name': 'Mercator',
             'mapgridlen': 19,
             'needext': 0,
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, -4, 4, 1, -4, -4, 4, 1, 4, 4, 4]
         },
-        # 3.20: Polar Stereographic Projection
         20: {
+            'name': 'Polar Stereographic Projection',
             'mapgridlen': 18,
             'needext': 0,
             'mapdrs': [1, 1, 4, 1, 4, 1, 4, 4, 4, -4, 4, 1, -4, 4, 4, 4, 1, 1]
         },
-        # 3.30: Lambert Conformal
         30: {
+            'name':
+            'Lambert Conformal',
             'mapgridlen':
             22,
             'needext':
@@ -142,8 +147,9 @@ def grid_template(template_number):
                 -4, 4
             ]
         },
-        # 3.31: Albers equal area
         31: {
+            'name':
+            'Albers equal area',
             'mapgridlen':
             22,
             'needext':
@@ -153,15 +159,16 @@ def grid_template(template_number):
                 -4, 4
             ]
         },
-        # 3.40: Guassian Lat/Lon
         40: {
+            'name': 'Guassian Lat/Lon',
             'mapgridlen': 19,
             'needext': 0,
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, 4, -4, 4, 1, -4, 4, 4, 4, 1]
         },
-        # 3.41: Rotated Gaussian Lat/Lon
         41: {
+            'name':
+            'Rotated Gaussian Lat/Lon',
             'mapgridlen':
             22,
             'needext':
@@ -171,8 +178,9 @@ def grid_template(template_number):
                 4, 4
             ]
         },
-        # 3.42: Stretched Gaussian Lat/Lon
         42: {
+            'name':
+            'Stretched Gaussian Lat/Lon',
             'mapgridlen':
             22,
             'needext':
@@ -182,8 +190,9 @@ def grid_template(template_number):
                 4, -4
             ]
         },
-        # 3.43: Stretched and Rotated Gaussian Lat/Lon
         43: {
+            'name':
+            'Stretched and Rotated Gaussian Lat/Lon',
             'mapgridlen':
             25,
             'needext':
@@ -193,32 +202,33 @@ def grid_template(template_number):
                 4, 4, -4, 4, -4
             ]
         },
-        # 3.50: Spherical Harmonic Coefficients
         50: {
+            'name': 'Spherical Harmonic Coefficients',
             'mapgridlen': 5,
             'needext': 0,
             'mapdrs': [4, 4, 4, 1, 1]
         },
-        # 3.51: Rotated Spherical Harmonic Coefficients
         51: {
+            'name': 'Rotated Spherical Harmonic Coefficients',
             'mapgridlen': 8,
             'needext': 0,
             'mapdrs': [4, 4, 4, 1, 1, -4, 4, 4]
         },
-        # 3.52: Stretched Spherical Harmonic Coefficients
         52: {
+            'name': 'Stretched Spherical Harmonic Coefficients',
             'mapgridlen': 8,
             'needext': 0,
             'mapdrs': [4, 4, 4, 1, 1, -4, 4, -4]
         },
-        # 3.53: Stretched and Rotated Spherical Harmonic Coefficients
         53: {
+            'name': 'Stretched and Rotated Spherical Harmonic Coefficients',
             'mapgridlen': 11,
             'needext': 0,
             'mapdrs': [4, 4, 4, 1, 1, -4, 4, 4, -4, 4, -4]
         },
-        # 3.90: Space View Perspective or orthographic
         90: {
+            'name':
+            'Space View Perspective or orthographic',
             'mapgridlen':
             21,
             'needext':
@@ -226,40 +236,41 @@ def grid_template(template_number):
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, -4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 4]
         },
-        # 3.100: Triangular grid based on an icosahedron
         100: {
+            'name': 'Triangular grid based on an icosahedron',
             'mapgridlen': 11,
             'needext': 0,
             'mapdrs': [1, 1, 2, 1, -4, 4, 4, 1, 1, 1, 4]
         },
-        # 3.110: Equatorial Azimuthal equidistant
         110: {
+            'name': 'Equatorial Azimuthal equidistant',
             'mapgridlen': 16,
             'needext': 0,
             'mapdrs': [1, 1, 4, 1, 4, 1, 4, 4, 4, -4, 4, 1, 4, 4, 1, 1]
         },
-        # 3.120: Azimuth-range projection
         120: {
+            'name': 'Azimuth-range projection',
             'mapgridlen': 7,
             'needext': 1,
             'mapdrs': [4, 4, -4, 4, 4, 4, 1]
         },
-        # 3.204: Curvilinear Orthogonal Grid
         204: {
+            'name': 'Curvilinear Orthogonal Grid',
             'mapgridlen': 19,
             'needext': 0,
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, 4, -4, 4, 1, -4, 4, 4, 4, 1]
         },
-        # 3.32768: Rot Lat/Lon E-grid (Arakawa)
         32768: {
+            'name': 'Rot Lat/Lon E-grid (Arakawa)',
             'mapgridlen': 19,
             'needext': 0,
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, 4, -4, 4, 1, -4, 4, 4, 4, 1]
         },
-        # 3.32769: Rot Lat/Lon Non-E Staggered grid (Arakawa)
         32769: {
+            'name':
+            'Rot Lat/Lon Non-E Staggered grid (Arakawa)',
             'mapgridlen':
             21,
             'needext':
@@ -267,15 +278,16 @@ def grid_template(template_number):
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, 4, -4, 4, 1, -4, 4, 4, 4, 1, 4, 4]
         },
-        # 3.1000: Cross Section Grid
         1000: {
+            'name': 'Cross Section Grid',
             'mapgridlen': 20,
             'needext': 1,
             'mapdrs':
             [1, 1, 4, 1, 4, 1, 4, 4, 4, 4, -4, 4, 1, 4, 4, 1, 2, 1, 1, 2]
         },
-        # 3.1100: Hovmoller Diagram Grid
         1100: {
+            'name':
+            'Hovmoller Diagram Grid',
             'mapgridlen':
             28,
             'needext':
@@ -285,14 +297,14 @@ def grid_template(template_number):
                 1, -4, 2, 1, 1, 1, 1, 1
             ]
         },
-        # 3.1200: Time Section Grid
         1200: {
+            'name': 'Time Section Grid',
             'mapgridlen': 16,
             'needext': 1,
             'mapdrs': [4, 1, -4, 1, 1, -4, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2]
         },
     }
-    return templatesgrid[template_number]
+    return templatesgrid.get(template_number, None)
 
 
 def drs_template(template_number):
@@ -341,6 +353,12 @@ def drs_template(template_number):
             'mapdrslen': 5,
             'needext': 0,
             'mapdrs': [4, -2, -2, 1, 1]
+        },
+        # // 5.200: Run-Length Packing JMA
+        200: {
+            'mapdrslen': 5,
+            'mapdrs': [1, 2, 2, 1, 2],
+            'needext': 0,
         },
         #  // 5.40000: Grid point data - JPEG2000 encoding
         40000: {
@@ -442,6 +460,17 @@ def pds_template(template_number):
             'mapdrs': [
                 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 2, 1, 1, 1, 1,
                 1, 1, 4, 1, 1, 1, 4, 1, 4
+            ]
+        },
+        # 4.50008: JMA modified version of 4.8
+        50008: {
+            'len':
+            33,
+            'needext':
+            0,
+            'mapdrs': [
+                1, 1, 1, 1, 1, 2, 1, 1, 4, 1, 1, 4, 1, 1, 4, 2, 1, 1, 1, 1, 1,
+                1, 4, 1, 1, 1, 4, 1, 4, 4, 3, 4, 3, 4, 3
             ]
         },
         # 4.9: Probablility Forecast at Horiz Level/Layer
