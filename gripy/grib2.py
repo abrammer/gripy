@@ -67,6 +67,8 @@ class Section1:
             f"  Grib Master Version: {self.gMasterVersion}.{self.gLocalVersion}\n"
             f"  Date               : {self.year}-{self.month:02}-{self.day:02}\n"
             f"  Time               : {self.hour:02}:{self.minute:02}:{self.second:02}\n"
+            f"  Prod. Status       : {self.__productionStatusOfProcessedData}\n"
+            f"  Data Type          : {self.__typeOfProcessedData}\n"
         )
 
     @property
@@ -147,11 +149,11 @@ class Section3:
 
     def __repr__(self):
         return ("Section 3:\n"
-                f"  grid_source  = {self.grid_source}\n"
-                f"  ndpts        = {self.ndpts}\n"
-                f"  num_oct      = {self.num_oct}\n"
-                f"  template_num = {self.template_num}\n"
-                f"  grid_template= {self.template_data}\n")
+                f"  grid_source     : {self.grid_source}\n"
+                f"  ndpts           : {self.ndpts}\n"
+                f"  num_oct         : {self.num_oct}\n"
+                f"  template_num    : {self.template_num}\n"
+                f"  grid_template   : {self.template_data}\n")
 
 
 class Section4:
@@ -169,6 +171,11 @@ class Section5:
     def __init__(self, template, template_num, ndpts, pos):
         self.template_num = template_num
         self.drs_template = template
+
+    def __repr__(self, ):
+        return ("Section 5:\n"
+                f" template_num     : {self.template_num}\n"
+                f" drs template     : {self.drs_template}\n")
 
 
 class Section6:
