@@ -13,7 +13,7 @@ setup(
     author='abrammer',
     author_email='alan.brammer@gmail.com',
     url='https://github.com/abrammer/gripy',
-    version='0.0.1',
+    version='0.0.2',
     install_requires=[
         'numpy',
     ],
