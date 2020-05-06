@@ -134,7 +134,7 @@
     integer,allocatable :: gref(:),gwidth(:),glen(:)
     real :: ref,bscale,dscale,rmiss1,rmiss2
     ! real :: fldo(6045)
-    integer :: totBit, totLen
+    integer :: totBit, totLen, non
     !f2py intent(in) cpack
     !f2py intent(in) len
     !f2py intent(in) lensec
@@ -217,7 +217,7 @@
         ival2=0
         minsd=0
       endif
-    ! print *,'SDu ',ival1,ival2,minsd,nbitsd
+      ! print *,'SDu ',ival1,ival2,minsd,nbitsd
     endif
     !
     !  Extract Each Group's reference value
@@ -281,11 +281,12 @@
     enddo
     if (totLen .NE. ndpts) then
       ier=1
-      ! print*, totLen, ndpts
+      print*, totLen, ".NE.", ndpts
       return
     endif
     if ( (totBit/8) .GT. lensec) then
       ier=1
+      print*, totBit/8, ".GT.", lensec
       return
     endif
     !
@@ -359,6 +360,7 @@
     !  If using spatial differences, add overall min value, and
     !  sum up recursively
     !
+    ! print*,' idrstmpl(17)', idrstmpl(17)
     if (idrsnum.eq.3) then         ! spatial differencing
       if (idrstmpl(17).eq.1) then      ! first order
           ifld(1)=ival1
@@ -389,8 +391,8 @@
     !
     !  Scale data back to original form
     !
-    !print*, MAXVAL(ifld), MINVAL(ifld)
-    !print *,'SAGT: ',ref,bscale,dscale
+    ! print*, MAXVAL(ifld), MINVAL(ifld)
+    ! print *,'SAGT: ',ref,bscale,dscale
     if ( idrstmpl(7).eq.0 ) then        ! no missing values
       do n=1,ndpts
         fld(n)=((real(ifld(n))*bscale)+ref)*dscale

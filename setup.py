@@ -6,7 +6,9 @@ except ImportError:
     dist.Distribution().fetch_build_eggs(['numpy>=1.10'])
     from numpy.distutils.core import setup, Extension
 
+
 lib = Extension(name='gripy.libg2', sources=['gripy/libg2.f90'])
+
 
 setup(
     name='gripy',

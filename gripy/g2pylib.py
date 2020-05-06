@@ -3,7 +3,7 @@ import struct
 import numpy as np
 
 # from gripy.legacy.comunpack import comunpack
-from gripy.libg2 import comunpack
+from gripy.libg2 import comunpack, gbytes
 from gripy import binary
 
 
@@ -961,14 +961,14 @@ def unpack6(buff, gds1, pos, y):
         # membuff = np.array(memoryview(buff[pos+6:pos+length]), dtype=np.uint8)
         # fmt = f">{gds1/8:.0f}B"
         # membuff = np.array(struct.unpack_from(fmt, buff, pos+6), dtype=np.uint8)
-        membuff = np.frombuffer(buff,
-                                dtype='>B',
-                                count=int(gds1 / 8),
-                                offset=pos + 6)
-        bitmap = np.unpackbits(membuff)
-        if len(bitmap) != gds1:
-            raise RuntimeError(
-                'Section 6: Bitmap length does not match expected')
+
+        membuff = np.frombuffer(buff, dtype='>B',offset=pos + 6)
+        bitmap = np.unpackbits(membuff)[:gds1]
+#         bitmap1 = gbytes(memoryview(buff), 48, 1, 0, gds1)
+#         print(all(bitmap == bitmap1))
+        #         if len(bitmap) != gds1:
+#             raise RuntimeError(
+#                 'Section 6: Bitmap length does not match expected')
 
     return bitmap, bitmap_flag
 
@@ -1002,9 +1002,9 @@ def g2_unpack7(cgrib, iofst, igdsnum, igdstmpl, idrsnum, idrstmpl, ngpts):
         # print("cgrib:", len(cgrib[iofst+5:]))
         # raise NotImplementedError('comunpack is not support yet, sorry :/ ')
         #         grb_int = np.frombuffer(cgrib[iofst+5:], dtype=np.uint8)
-        #         memview = memoryview(cgrib[iofst+5:])
+        memview = memoryview(cgrib[iofst+5:])
         #         fld, ier = comunpack(grb_int, lensec, idrsnum, idrstmpl, ngpts)
-        fld = comunpack(cgrib[iofst + 5:], lensec, idrsnum, idrstmpl, ngpts)
+        fld = comunpack(memview, lensec, idrsnum, idrstmpl, ngpts)
         # print(ier)
         # fld = comunpack(bit_buff, lensec, idrsnum, idrstmpl, ngpts)
     elif (idrsnum == 50):  # Spectral Simple
