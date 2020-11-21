@@ -6,7 +6,7 @@ import struct
 import numpy as np
 
 from gripy import g2pylib
-from gripy import tables
+from gripy import tables, grids
 
 
 class Grib2File:
@@ -158,6 +158,10 @@ class Section3:
     @property
     def grid_type(self):
         return self.template['name']
+
+    def latlon(self,):
+        if self.template_num == 0:
+            return grids.generate_regular_latlon_grid(self.ndpts, self.template_data)
 
     def __repr__(self):
         return ("Section 3:\n"
