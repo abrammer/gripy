@@ -224,9 +224,15 @@ class Section7:
     """DATA SECTION:
     This is where the data will be stored and unpacked from.
     """
-    def __init__(self, io, pos):
+    def __init__(self, io, pos, length):
         self.file_obj = io
         self.start_pos = pos
+        self.section_length = length
+
+    @property
+    def byte_array(self,):
+        self.file_obj.seek(self.start_pos)
+        return self.file_obj.read(self.section_length)
 
 
 def _unpack2(*_):
@@ -365,7 +371,7 @@ class Grib2Message:
         self.file_obj.seek(startpos)
         lensect, sectnum = struct.unpack('>IB', self.file_obj.read(5))
         self.section_lengths[n] = lensect
-        return Section7(self.file_obj, startpos)
+        return Section7(self.file_obj, startpos, lensect)
 
     def read_section8(self, ):
         """ END SECTION:
@@ -380,10 +386,7 @@ class Grib2Message:
 
     @property
     def values(self, ):
-        startpos = self.section_starting_position(7)
-        self.file_obj.seek(startpos)
-        fld = g2pylib.unpack7(gribmessage=self.file_obj.read(
-            self.section_lengths[7]),
+        fld = g2pylib.unpack7(gribmessage=self.section7.byte_array,
                               gdtnum=self.section3.template_num,
                               gdtmpl=self.section3.template_data,
                               drtnum=self.section5.template_num,
