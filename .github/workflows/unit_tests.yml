@@ -35,7 +35,14 @@ jobs:
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
         $CONDA/bin/python -m pip install -r requirements-test.txt
-        $CONDA/bin/python -m pytest tests/
+      if: matrix.os == 'macos-10.15'
+
+    -name: macos run tests
+      working-directory:
+        $HOME/gripy/gripy/tests/
+      run: |
+        pwd
+        $CONDA/bin/python -m pytest ./
       if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran
