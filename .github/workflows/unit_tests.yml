@@ -24,8 +24,8 @@ jobs:
 
     - name: Fix Conda permissions on macOS
       run: sudo chown -R $UID $CONDA
-      if: matrix.os == 'macos-latest'
-      
+      if: matrix.os == 'macos-10.15'
+
     - name: macos install fortran
       run: |
         python -m pip install --upgrade pip
