@@ -35,11 +35,9 @@ jobs:
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
         $CONDA/bin/python -m pip install -r requirements-test.txt
-        echo $PWD
-        $CONDA/bin/pytest tests/
       if: matrix.os == 'macos-10.15'
 
-    -name: macos run tests
+    - name: macos run tests
       run: $CONDA/bin/pytest tests/
       if: matrix.os == 'macos-10.15'
 
