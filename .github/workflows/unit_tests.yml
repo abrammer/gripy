@@ -4,10 +4,13 @@ on: [push]
 
 jobs:
   build-linux:
-    runs-on: macos-latest
     strategy:
       max-parallel: 5
-
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
