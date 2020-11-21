@@ -8,8 +8,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-10.15 ]
-        python: [3.6, 3.7, 3.8,]
+        os: [ macos-10.15 ]
+        python: [3.7]
 
     steps:
     - uses: actions/checkout@v1
@@ -25,7 +25,8 @@ jobs:
     - name: macos install fortran
       run: |
         python -m pip install --upgrade pip
-        pip install --global-option='--fcompiler=gfortran-8' .
+        pip install numpy
+        pip install .
       if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran
