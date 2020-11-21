@@ -39,7 +39,6 @@ jobs:
 
     - name: macos run tests
       run: |
-        pwd
         $CONDA/bin/python -m pytest ./
       working-directory: $HOME/gripy/gripy/tests/
       if: matrix.os == 'macos-10.15'
