@@ -146,7 +146,7 @@
     ier=0
     ! print *,'IDRSTMPL: ',(idrstmpl(j),j=1,16)
     ieee = idrstmpl(1)
-    call rdieee(ieee,ref,1)
+    call rdieee(ieee, ref, 1)
     bscale = 2.0**real(idrstmpl(2))
     dscale = 10.0**real(-idrstmpl(3))
     nbitsgref = idrstmpl(4)
@@ -281,12 +281,12 @@
     enddo
     if (totLen .NE. ndpts) then
       ier=1
-      print*, totLen, ".NE.", ndpts
+      ! print*, totLen, ".NE.", ndpts
       return
     endif
     if ( (totBit/8) .GT. lensec) then
       ier=1
-      print*, totBit/8, ".GT.", lensec
+      ! print*, totBit/8, ".GT.", lensec
       return
     endif
     !
@@ -427,7 +427,7 @@
   end subroutine comunpack
 
 
-  subroutine rdieee(rieee,a,num)
+  subroutine rdieee(rieee, a, num)
     !                .      .    .                                       .
     ! SUBPROGRAM:    rdieee
     !   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-09
