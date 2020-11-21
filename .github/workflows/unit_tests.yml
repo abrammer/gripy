@@ -31,9 +31,12 @@ jobs:
 
     - name: macos install fortran
       run: |
-        brew install gcc
-        # $CONDA/bin/conda install gfortran_osx-64 numpy wheel
-        # $CONDA/bin/python -m pip install .
+        # brew install gcc
+        $CONDA/bin/conda install gfortran_osx-64 numpy wheel
+        echo $CC
+        $CONDA/bin/gfortran
+        cp -f $CONDA/bin/gfortran /usr/local/bin/gfortran
+        $CONDA/bin/python -m pip install .
       if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran
