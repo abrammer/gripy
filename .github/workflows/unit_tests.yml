@@ -24,7 +24,7 @@ jobs:
 
     - name: macos install fortran
       run: brew install gcc
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran
       run: |
