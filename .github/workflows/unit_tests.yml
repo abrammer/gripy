@@ -31,6 +31,7 @@ jobs:
 
     - name: macos install fortran
       run: |
+        $CONDA/bin/conda init bash
         $CONDA/bin/conda activate base
         $CONDA/bin/conda install gfortran_osx-64 numpy wheel
         python -m pip install --upgrade pip
