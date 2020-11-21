@@ -40,8 +40,7 @@ jobs:
       if: matrix.os == 'macos-10.15'
 
     -name: macos run tests
-      run: |
-        $CONDA/bin/pytest tests/
+      run: $CONDA/bin/pytest tests/
       if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran
