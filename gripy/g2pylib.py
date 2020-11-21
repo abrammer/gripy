@@ -3,7 +3,7 @@ import struct
 import numpy as np
 
 # from gripy.legacy.comunpack import comunpack
-from gripy.libg2 import comunpack, gbytes
+from gripy.libg2 import comunpack
 from gripy import binary
 
 
@@ -962,13 +962,13 @@ def unpack6(buff, gds1, pos, y):
         # fmt = f">{gds1/8:.0f}B"
         # membuff = np.array(struct.unpack_from(fmt, buff, pos+6), dtype=np.uint8)
 
-        membuff = np.frombuffer(buff, dtype='>B',offset=pos + 6)
+        membuff = np.frombuffer(buff, dtype='>B', offset=pos + 6)
         bitmap = np.unpackbits(membuff)[:gds1]
-#         bitmap1 = gbytes(memoryview(buff), 48, 1, 0, gds1)
-#         print(all(bitmap == bitmap1))
+        # bitmap1 = gbytes(memoryview(buff), 48, 1, 0, gds1)
+        # print(all(bitmap == bitmap1))
         #         if len(bitmap) != gds1:
-#             raise RuntimeError(
-#                 'Section 6: Bitmap length does not match expected')
+        #     raise RuntimeError(
+        #         'Section 6: Bitmap length does not match expected')
 
     return bitmap, bitmap_flag
 
@@ -978,11 +978,8 @@ def unpack7(gribmessage,
             gdtmpl,
             drtnum,
             drtmpl,
-            ndpts,
-            ipos,
-            zeros,
-            printminmax=False,
-            storageorder='C'):
+            ndpts):
+    ipos = 0
     fld = g2_unpack7(gribmessage, ipos, gdtnum, gdtmpl, drtnum, drtmpl, ndpts)
     return fld
 

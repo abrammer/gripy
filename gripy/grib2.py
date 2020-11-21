@@ -43,6 +43,9 @@ class Grib2File:
 
 
 class Section1:
+    """ IDENTIFICATION SECTION:
+    This section includes center, date, production status and
+    which grib tables are used to decode the data """
     def __init__(self, data, *_):
         if data[1] != 1:
             raise ValueError(data)
@@ -70,8 +73,7 @@ class Section1:
             f"  Date               : {self.year}-{self.month:02}-{self.day:02}\n"
             f"  Time               : {self.hour:02}:{self.minute:02}:{self.second:02}\n"
             f"  Prod. Status       : {self.__productionStatusOfProcessedData}\n"
-            f"  Data Type          : {self.__typeOfProcessedData}\n"
-        )
+            f"  Data Type          : {self.__typeOfProcessedData}\n")
 
     @property
     def center(self, ):
@@ -103,16 +105,22 @@ class Section1:
 
 
 class Section2:
+    """ Local Use Section:
+        Who knows what goes on in here, we'll just keep queit and move on """
     def __init__(self, *_):
         pass
 
 
 class Section3:
+    """ GRID DEFINITION SECTION:
+    Includes metadata about the grid for the data. This is mainly just descriptors rather than
+    the actual grid points.  This info will tell how to generate the grid locations"""
     def __init__(self, buff):
         self.data = buff
         self.header = struct.unpack_from('>IBBIBBH', buff, 0)
         if self.header[1] != 3:
-            raise ValueError(f"Found Section {self.header[1]} while initialising section 3")
+            raise ValueError(
+                f"Found Section {self.header[1]} while initialising section 3")
         self.grid_source = self.header[2]
         self.ndpts = self.header[3]
         self.num_oct = self.header[4]
@@ -161,6 +169,9 @@ class Section3:
 
 
 class Section4:
+    """PRODUCT DEFINITION SECTION:
+    This includes details about the variable name, units, vertical coords.
+    """
     def __init__(self, template, template_num, *_):
         self.template_num = template_num
         self.pds_template = template
@@ -172,6 +183,9 @@ class Section4:
 
 
 class Section5:
+    """DATA REPRESENTATION SECTION:
+    Inludes data about how many data points to expect, type of data, and how to
+    unpack the data"""
     def __init__(self, template, template_num, ndpts, pos):
         self.template_num = template_num
         self.drs_template = template
@@ -185,6 +199,9 @@ class Section5:
 
 
 class Section6:
+    """BIT MAP SECTION:
+    If the field has missing values, this section contains a binary mask of where those
+    missing values are.  This is used to drop missing values in section 7"""
     def __init__(self, bmap, bmapflag):
         if bmapflag == 0:
             self.bmap = bmap.astype('B')
@@ -198,10 +215,15 @@ class Section6:
                 f"  bitmap mask    : {len(self.bmap) - sum(self.bmap)}\n"
                 f"  bitmap flag    :{self.bmapflag}\n")
 
+
 class Section7:
+    """DATA SECTION:
+    This is where the data will be stored and unpacked from.
+    """
     def __init__(self, io, pos):
         self.file_obj = io
         self.start_pos = pos
+
 
 def _unpack2(*_):
     return (_, )
@@ -275,6 +297,8 @@ class Grib2Message:
         return table0_0.get(self.discipline_int, 'Missing')
 
     def read_section0(self, ):
+        """ Section 0 'INDICATOR SECTION' describes the grib message
+            This just includes the grib type (1/2), discipline and length of message"""
         startpos = self.section_starting_position(0) + 4
         self.file_obj.seek(startpos)
         # get discipline and version info.
@@ -327,7 +351,8 @@ class Grib2Message:
         startpos = self.section_starting_position(n)
         section_bytes, sectnum = self._get_section_bytes(startpos)
         self.section_lengths[n] = len(section_bytes)
-        bmap, bmapflag = g2pylib.unpack6(section_bytes, self.section3.ndpts, 0, [])
+        bmap, bmapflag = g2pylib.unpack6(section_bytes, self.section3.ndpts, 0,
+                                         [])
         return Section6(bmap, bmapflag)
 
     def read_section7(self, ):
@@ -339,6 +364,9 @@ class Grib2Message:
         return Section7(self.file_obj, startpos)
 
     def read_section8(self, ):
+        """ END SECTION:
+        Should just include '7777' to indicate the end of the grib message
+        """
         n = 8
         startpos = self.section_starting_position(n)
         self.file_obj.seek(startpos)
@@ -347,23 +375,20 @@ class Grib2Message:
             raise IOError('Grib2 Message not finished yet')
 
     @property
-    def values(self,):
+    def values(self, ):
         startpos = self.section_starting_position(7)
         self.file_obj.seek(startpos)
-        fld = g2pylib.unpack7(gribmessage=self.file_obj.read(self.section_lengths[7]),
-                               gdtnum=self.section3.template_num,
-                               gdtmpl=self.section3.template_data,
-                               drtnum=self.section5.template_num,
-                               drtmpl=self.section5.drs_template,
-                               ndpts=self.section5.ndpts,
-                               ipos=0,
-                               zeros=np.empty,
-                               printminmax=False,
-                               storageorder='C')
+        fld = g2pylib.unpack7(gribmessage=self.file_obj.read(
+            self.section_lengths[7]),
+                              gdtnum=self.section3.template_num,
+                              gdtmpl=self.section3.template_data,
+                              drtnum=self.section5.template_num,
+                              drtmpl=self.section5.drs_template,
+                              ndpts=self.section5.ndpts)
         if self.section6.bmapflag == 0:
             vals = np.empty(self.section3.ndpts, 'f')
-            vals[self.section6.bmap==1] = fld
-            vals[self.section6.bmap==0] = np.nan
+            vals[self.section6.bmap == 1] = fld
+            vals[self.section6.bmap == 0] = np.nan
         else:
             vals = fld
         return vals
@@ -379,7 +404,6 @@ def get_table_value(table, key):
             with open(table_dir /
                       f'tables/ncep/{maj}/{table}.json') as json_file:
                 table_data = json.load(json_file)
-
         else:
             logging.warning(f"{table_path} was not found.")
             table_data = {}
