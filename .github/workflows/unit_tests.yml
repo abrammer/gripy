@@ -35,7 +35,7 @@ jobs:
         $CONDA/bin/conda install gfortran_osx-64 numpy wheel
         echo $CC
         $CONDA/bin/gfortran -v
-        cp -f $CONDA/bin/gfortran /usr/local/bin/gfortran
+        ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
       if: matrix.os == 'macos-10.15'
 
