@@ -31,12 +31,11 @@ jobs:
 
     - name: macos install fortran
       run: |
-        # brew install gcc
         $CONDA/bin/conda install gfortran_osx-64 numpy wheel
-        echo $CC
-        $CONDA/bin/gfortran -v
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
+        $CONDA/bin/python -m pip install -r requirements-test.txt
+        $CONDA/bin/python -m pytest tests/
       if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran
@@ -50,7 +49,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install . 
         pip install -r requirements-test.txt
+      if: matrix.os != 'macos-10.15'
     - name: Test with pytest
       run: |
         pip install pytest
         pytest tests/
+      if: matrix.os != 'macos-10.15'
+
