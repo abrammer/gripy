@@ -23,14 +23,17 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
 
     - name: Fix Conda permissions on macOS
-      run: sudo chown -R $UID $CONDA
+      run: |
+        sudo chown -R $UID $CONDA
+        echo $SHELL
+        $CONDA/bin/conda init $SHELL
       if: matrix.os == 'macos-10.15'
 
     - name: macos install fortran
       run: |
+        $CONDA/bin/conda activate base
+        $CONDA/bin/conda install gfortran_osx-64 numpy wheel
         python -m pip install --upgrade pip
-        pip install numpy wheel
-        $CONDA/bin/conda install gfortran_osx-64
         pip install .
       if: matrix.os == 'macos-10.15'
 
