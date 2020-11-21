@@ -37,11 +37,11 @@ jobs:
         $CONDA/bin/python -m pip install -r requirements-test.txt
       if: matrix.os == 'macos-10.15'
 
-    -name: macos run tests
-      working-directory: $HOME/gripy/gripy/tests/
+    - name: macos run tests
       run: |
         pwd
         $CONDA/bin/python -m pytest ./
+      working-directory: $HOME/gripy/gripy/tests/
       if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran
