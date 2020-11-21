@@ -206,12 +206,40 @@ class Section6:
     """BIT MAP SECTION:
     If the field has missing values, this section contains a binary mask of where those
     missing values are.  This is used to drop missing values in section 7"""
-    def __init__(self, bmap, bmapflag):
-        if bmapflag == 0:
-            self.bmap = bmap.astype('B')
+    def __init__(self, io, pos, length, ndpts):
+        self.file_obj = io
+        self.start_pos = pos
+        self.section_length = length
+        self.ndpts = ndpts
+        self._bitmap = None
+        self._bitmapflag = None
+        self._decoded = False
+
+    @property
+    def byte_array(self,):
+        self.file_obj.seek(self.start_pos)
+        return self.file_obj.read(self.section_length)
+
+    def decode_section(self,):
+        bmap, bmapf = g2pylib.unpack6(self.byte_array, self.ndpts, 0, [])
+        if bmapf == 0:
+            self._bitmap = bmap.astype('B')
         else:
-            self.bmap = []
-        self.bmapflag = bmapflag
+            self._bitmap = []
+        self._bitmapflag = bmapf
+        self._decoded = True
+
+    @property
+    def bitmap(self,):
+        if not self._decoded:
+            self.decode_section()
+        return self._bitmap
+
+    @property
+    def bitmapflag(self,):
+        if not self._decoded:
+            self.decode_section()
+        return self._bitmapflag
 
     def __repr__(self, ):
         return ("Section 6:\n"
@@ -359,11 +387,10 @@ class Grib2Message:
     def read_section6(self, ):
         n = 6
         startpos = self.section_starting_position(n)
-        section_bytes, sectnum = self._get_section_bytes(startpos)
-        self.section_lengths[n] = len(section_bytes)
-        bmap, bmapflag = g2pylib.unpack6(section_bytes, self.section3.ndpts, 0,
-                                         [])
-        return Section6(bmap, bmapflag)
+        self.file_obj.seek(startpos)
+        lensect, sectnum = struct.unpack('>IB', self.file_obj.read(5))
+        self.section_lengths[n] = lensect
+        return Section6(self.file_obj, startpos, lensect, self.section3.ndpts)
 
     def read_section7(self, ):
         n = 7
