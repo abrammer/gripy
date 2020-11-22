@@ -38,19 +38,18 @@ jobs:
       run: |
         $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
         $CONDA/bin/python -c "import os; print(os.getenv('DELOCATE_LIBRARY_PATH'))"
-        # $CONDA/bin/conda install gfortran_osx-64 numpy wheel
-        # ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
-        # $CONDA/bin/python -m pip install .
-        # $CONDA/bin/python -m pip install -r requirements-test.txt
-        # $CONDA/bin/python -m pip install delocate
-        # $CONDA/bin/python setup.py bdist_wheel
+        $CONDA/bin/conda install gfortran_osx-64 numpy wheel
+        ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
+        $CONDA/bin/python -m pip install .
+        $CONDA/bin/python -m pip install -r requirements-test.txt
+        $CONDA/bin/python setup.py bdist_wheel
         # which otool
         # which install_name_tool
 
-        # echo "List delocate"
-        # DYLD_LIBRARY_PATH=$CONDA/lib; $CONDA/bin/delocate-listdeps dist/gripy-*
-        # echo "Start delocate"
-        # DYLD_LIBRARY_PATH=$CONDA/lib; $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
+        echo "List delocate"
+        $CONDA/bin/delocate-listdeps dist/gripy-*
+        echo "Start delocate"
+        $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
     - uses: actions/upload-artifact@v2
       with:
         name: 'Artifacts-V2'
