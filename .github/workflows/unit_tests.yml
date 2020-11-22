@@ -44,7 +44,7 @@ jobs:
     - name: Build wheels
       env:
         # CIBW_BEFORE_BUILD: scripts/build-openssl /tmp/vendor
-        # CIBW_ENVIRONMENT: AIOQUIC_SKIP_TESTS=ipv6,loss CFLAGS=-I/tmp/vendor/include LDFLAGS=-L/tmp/vendor/lib
+        CIBW_ENVIRONMENT: "PATH=$PATH:$CONDA/bin"
         CIBW_SKIP: cp27-* cp33-* cp34-* cp35-* pp27-*
         # CIBW_TEST_COMMAND: $CONDA/bin/pytest discover -t {project} -s {project}/tests
       run: |
