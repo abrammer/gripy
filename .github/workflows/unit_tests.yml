@@ -37,7 +37,9 @@ jobs:
         $CONDA/bin/python -m pip install -r requirements-test.txt
         $CONDA/bin/python -m pip install delocate
         $CONDA/bin/python setup.py bdist_wheel
+        echo "List delocate"
         $CONDA/bin/delocate-listdeps dist/gripy-*
+        echo "Start delocate"
         $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
     - uses: actions/upload-artifact@v2
       with:
