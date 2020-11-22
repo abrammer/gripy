@@ -31,7 +31,7 @@ jobs:
 
     - name: macos install dependencies
       env:
-        DELOCATE_LIBRARY_PATH: .:$CONDA/lib:/usr/local/lib
+        DELOCATE_LIBRARY_PATH: /usr/local/miniconda/lib
       run: |
         $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
         $CONDA/bin/python -c "import os; print(os.getenv('DELOCATE_LIBRARY_PATH'))"
