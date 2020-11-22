@@ -35,7 +35,8 @@ jobs:
         DYLD_FALLBACK_LIBRARY_PATH: $CONDA/lib:/usr/local/lib
         RPATH: $CONDA/lib:/usr/local/lib
       run: |
-        DYLD_LIBRARY_PATH=/diff; $CONDA/bin/python -c "import os; print(os.getenv('DYLD_LIBRARY_PATH'))"
+        $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
+        DELOCATE_LIBRARY_PATH=/diff; $CONDA/bin/python -c "import os; print(os.getenv('DELOCATE_LIBRARY_PATH'))"
         # $CONDA/bin/conda install gfortran_osx-64 numpy wheel
         # ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         # $CONDA/bin/python -m pip install .
