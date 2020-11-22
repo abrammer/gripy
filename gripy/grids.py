@@ -11,9 +11,8 @@ def generate_regular_latlon_grid(ndpts, grid_template):
     nlat = grid_template[8]
     angle_scale = grid_template[9]
     angle_divis = grid_template[10]
-    if angle_scale == 0:
-        angle_scale = 1.
-    if angle_divis <= 0 or angle_divis == (2 ** 32 - 1):
+    if angle_scale == 0 or angle_divis <= 0 or angle_divis == (2 ** 32 - 1):
+        angle_scale = 1
         angle_divis = 1.e6
     offset = angle_scale / angle_divis
     lat1 = grid_template[11] * offset

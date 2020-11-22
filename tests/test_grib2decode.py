@@ -107,6 +107,15 @@ def test_grib2_nav_pds_decode():
         assert expect == ret_msg.longname
 
 
+def test_grib2_nav_latlon():
+    grib_file = get_test_nav_grib()
+    with grib2.Grib2File(str(grib_file)) as g2:
+        msgs = g2.grib_msgs
+        lats, lons = msgs[0].section3.latlon()
+    assert lats[0] > -90.1
+    assert lats[-1] < 90.1
+
+
 def test_grib2decode_gfs_ident_sect():
     grib_file = get_test_gfs_grib()
     msgs = py3grib2.Grib2Decode(str(grib_file))
@@ -143,6 +152,8 @@ def test_grib2decode_ngm_latlon():
     msg = py3grib2.Grib2Decode(str(grib_file))
     assert msg.latitude_first_gridpoint > -90.1
     assert msg.latitude_last_gridpoint < 90.1
+
+
 
 
 if __name__ == '__main__':
