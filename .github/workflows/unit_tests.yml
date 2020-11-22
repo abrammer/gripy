@@ -43,9 +43,8 @@ jobs:
         $CONDA/bin/python setup.py bdist_wheel
         which otool
         which install_name_tool
-        echo $DYLD_LIBRARY_PATH
-        echo $DYLD_FALLBACK_LIBRARY_PATH
-        echo $RPATH
+        ln -s $CONDA/lib/* ./
+        ls
         echo "List delocate"
         $CONDA/bin/delocate-listdeps dist/gripy-*
         echo "Start delocate"
