@@ -35,6 +35,7 @@ jobs:
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
         $CONDA/bin/python -m pip install -r requirements-test.txt
+        $CONDA/bin/python -m pip install delocate
       if: matrix.os == 'macos-10.15'
 
     - name: macos run tests
@@ -42,19 +43,14 @@ jobs:
       if: matrix.os == 'macos-10.15'
 
     - name: Build wheels
-      env:
-        # CIBW_BEFORE_BUILD: scripts/build-openssl /tmp/vendor
-        CIBW_ENVIRONMENT: "PATH=$PATH:$CONDA/bin CFLAGS=-I$CONDA/include LDFLAGS=-L$CONDA/lib"
-        CIBW_SKIP: cp27-* cp3* pp27-* pp34-* pp35-* pp36-* pp38-* pp39-*
-        # CIBW_TEST_COMMAND: $CONDA/bin/pytest discover -t {project} -s {project}/tests
       run: |
-        $CONDA/bin/pip install cibuildwheel
-        $CONDA/bin/cibuildwheel --output-dir ./wheelhouse
+        $CONDA/bin/python setup.py bdist_wheel
+        $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
       shell: bash
     - uses: actions/upload-artifact@v2
       with:
         name: 'Artifacts-V2'
-        path: './wheelhouse'
+        path: './fixed_wheels'
       if: matrix.os == 'macos-10.15'
 
     - name: windows install fortran

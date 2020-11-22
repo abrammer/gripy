@@ -1,3 +1,6 @@
+import setuptools
+from distutils.core import setup
+
 from distutils.command.sdist import sdist
 try:
     from numpy.distutils.core import setup, Extension
