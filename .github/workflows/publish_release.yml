@@ -45,7 +45,7 @@ jobs:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     strategy:
       matrix:
-        python: [ 3.6,3.7, 3.8 ]
+        python: [3.6,3.7, 3.8]
     runs-on: macos-latest
     steps:
 
@@ -67,7 +67,8 @@ jobs:
         DELOCATE_LIBRARY_PATH: /usr/local/miniconda/lib
       run: |
         $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
-        $CONDA/bin/conda install gfortran_osx-64 numpy wheel
+        $CONDA/bin/conda install python=${{ matrix.python }} gfortran_osx-64 numpy wheel
+        $CONDA/bin/python --version
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
         $CONDA/bin/python -m pip install -r requirements-test.txt
