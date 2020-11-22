@@ -32,7 +32,7 @@ jobs:
     - name: macos install dependencies
       env:
         DYLD_LIBRARY_PATH: $CONDA/lib:/usr/local/lib
-        DELOCATE_LIBRARY_PATH: /something
+        DELOCATE_LIBRARY_PATH: $CONDA/lib:/usr/local/lib
         DYLD_FALLBACK_LIBRARY_PATH: $CONDA/lib:/usr/local/lib
         RPATH: $CONDA/lib:/usr/local/lib
       run: |
