@@ -44,6 +44,7 @@ jobs:
         $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
     - uses: actions/upload-artifact@v2
       with:
+        name: macos_cp${{ matrix.python }}_wheel
         path: './fixed_wheels'
       if: matrix.os == 'macos-10.15'
 
