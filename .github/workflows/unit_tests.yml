@@ -32,11 +32,12 @@ jobs:
     - name: macos install dependencies
       env:
         DYLD_LIBRARY_PATH: $CONDA/lib:/usr/local/lib
+        DELOCATE_LIBRARY_PATH: /something
         DYLD_FALLBACK_LIBRARY_PATH: $CONDA/lib:/usr/local/lib
         RPATH: $CONDA/lib:/usr/local/lib
       run: |
         $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
-        DELOCATE_LIBRARY_PATH=/diff; $CONDA/bin/python -c "import os; print(os.getenv('DELOCATE_LIBRARY_PATH'))"
+        $CONDA/bin/python -c "import os; print(os.getenv('DELOCATE_LIBRARY_PATH'))"
         # $CONDA/bin/conda install gfortran_osx-64 numpy wheel
         # ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         # $CONDA/bin/python -m pip install .
