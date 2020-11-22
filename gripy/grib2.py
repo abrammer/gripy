@@ -1,4 +1,5 @@
 import logging
+from collections import namedtuple
 import json
 import pathlib
 import struct
@@ -7,6 +8,12 @@ import numpy as np
 
 from gripy import g2pylib
 from gripy import tables, grids
+
+
+Section3Data = namedtuple('section3', [
+            'lensect', 'section_num', 'grid_source', 'ndpts', 'num_oct',
+            'interpret', 'template_num'
+        ])
 
 
 class Grib2File:
@@ -106,7 +113,7 @@ class Section1:
 
 class Section2:
     """ Local Use Section:
-        Who knows what goes on in here, we'll just keep queit and move on """
+        Who knows what goes on in here, we'll just keep quiet and move on """
     def __init__(self, *_):
         pass
 
@@ -115,18 +122,44 @@ class Section3:
     """ GRID DEFINITION SECTION:
     Includes metadata about the grid for the data. This is mainly just descriptors rather than
     the actual grid points.  This info will tell how to generate the grid locations"""
-    def __init__(self, buff):
-        self.data = buff
-        self.header = struct.unpack_from('>IBBIBBH', buff, 0)
-        if self.header[1] != 3:
-            raise ValueError(
-                f"Found Section {self.header[1]} while initialising section 3")
-        self.grid_source = self.header[2]
-        self.ndpts = self.header[3]
-        self.num_oct = self.header[4]
-        self.intepret = self.header[5]
-        self.template_num = self.header[6]
+    def __init__(self, io, pos, length):
+        self.file_obj = io
+        self.start_pos = pos
+        self.section_length = length
+        self._decoded = False
         self._template_data = None
+
+    @property
+    def byte_array(self, ):
+        self.file_obj.seek(self.start_pos)
+        return self.file_obj.read(self.section_length)
+
+    def decode_section(self, ):
+        data = struct.unpack_from('>IBBIBBH', self.byte_array, 0)
+        self.data = Section3Data(*data)
+        if self.data.section_num != 3:
+            raise ValueError(
+                f"Found Section {self.data.section_num} while initialising section 3"
+            )
+
+    def check_decode(self):
+        if not self._decoded:
+            self.decode_section()
+
+    @property
+    def grid_source(self, ):
+        self.check_decode()
+        return self.data.grid_source
+
+    @property
+    def ndpts(self, ):
+        self.check_decode()
+        return self.data.ndpts
+
+    @property
+    def template_num(self, ):
+        self.check_decode()
+        return self.data.template_num
 
     @property
     def template(self):
@@ -151,7 +184,7 @@ class Section3:
             self._template_data = []
             for nbyte in fmt:
                 self._template_data.append(
-                    g2pylib.get_pp_bits(self.data, off, nbyte))
+                    g2pylib.get_pp_bits(self.byte_array, off, nbyte))
                 off += abs(nbyte)
         return self._template_data
 
@@ -159,15 +192,16 @@ class Section3:
     def grid_type(self):
         return self.template['name']
 
-    def latlon(self,):
+    def latlon(self, ):
         if self.template_num == 0:
-            return grids.generate_regular_latlon_grid(self.ndpts, self.template_data)
+            return grids.generate_regular_latlon_grid(self.ndpts,
+                                                      self.template_data)
 
     def __repr__(self):
         return ("Section 3:\n"
                 f"  grid_source     : {self.grid_source}\n"
                 f"  ndpts           : {self.ndpts}\n"
-                f"  num_oct         : {self.num_oct}\n"
+                f"  num_oct         : {self.data.num_oct}\n"
                 f"  template_num    : {self.template_num}\n"
                 f"  grid_template   : {self.template_data}\n")
 
@@ -200,11 +234,11 @@ class Section5:
         self._ndpts = None
 
     @property
-    def byte_array(self,):
+    def byte_array(self):
         self.file_obj.seek(self.start_pos)
         return self.file_obj.read(self.section_length)
 
-    def decode_section(self,):
+    def decode_section(self):
         template, template_num, ndpts, pos = g2pylib.unpack5(
             self.byte_array, 0, [])
         self._template_num = template_num
@@ -212,19 +246,19 @@ class Section5:
         self._ndpts = ndpts
 
     @property
-    def template_num(self,):
+    def template_num(self, ):
         if not self._decoded:
             self.decode_section()
         return self._template_num
 
     @property
-    def drs_template(self,):
+    def drs_template(self):
         if not self._decoded:
             self.decode_section()
         return self._template
 
     @property
-    def ndpts(self,):
+    def ndpts(self):
         if not self._decoded:
             self.decode_section()
         return self._ndpts
@@ -250,11 +284,11 @@ class Section6:
         self._decoded = False
 
     @property
-    def byte_array(self,):
+    def byte_array(self):
         self.file_obj.seek(self.start_pos)
         return self.file_obj.read(self.section_length)
 
-    def decode_section(self,):
+    def decode_section(self):
         bmap, bmapf = g2pylib.unpack6(self.byte_array, self.ndpts, 0, [])
         if bmapf == 0:
             self._bitmap = bmap.astype('B')
@@ -264,13 +298,13 @@ class Section6:
         self._decoded = True
 
     @property
-    def bitmap(self,):
+    def bitmap(self):
         if not self._decoded:
             self.decode_section()
         return self._bitmap
 
     @property
-    def bmapflag(self,):
+    def bmapflag(self):
         if not self._decoded:
             self.decode_section()
         return self._bitmapflag
@@ -292,7 +326,7 @@ class Section7:
         self.section_length = length
 
     @property
-    def byte_array(self,):
+    def byte_array(self):
         self.file_obj.seek(self.start_pos)
         return self.file_obj.read(self.section_length)
 
@@ -391,16 +425,12 @@ class Grib2Message:
         section = {
             1: Section1,
             2: Section2,
-            3: Section3,
             4: Section4,
-            5: Section5
         }
         unpack = {
             1: g2pylib.unpack1,
             2: _unpack2,
-            3: g2pylib.unpack3,
             4: g2pylib.unpack4,
-            5: g2pylib.unpack5
         }
 
         startpos = self.section_starting_position(n)
@@ -414,9 +444,10 @@ class Grib2Message:
     def read_section3(self, ):
         n = 3
         startpos = self.section_starting_position(n)
-        section_bytes, sectnum = self._get_section_bytes(startpos)
-        self.section_lengths[n] = len(section_bytes)
-        return Section3(section_bytes)
+        self.file_obj.seek(startpos)
+        lensect, sectnum = struct.unpack('>IB', self.file_obj.read(5))
+        self.section_lengths[n] = lensect
+        return Section3(self.file_obj, startpos, lensect)
 
     def read_section5(self, ):
         n = 5
