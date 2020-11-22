@@ -190,10 +190,44 @@ class Section5:
     """DATA REPRESENTATION SECTION:
     Inludes data about how many data points to expect, type of data, and how to
     unpack the data"""
-    def __init__(self, template, template_num, ndpts, pos):
-        self.template_num = template_num
-        self.drs_template = template
-        self.ndpts = ndpts
+    def __init__(self, io, pos, length):
+        self.file_obj = io
+        self.start_pos = pos
+        self.section_length = length
+        self._decoded = False
+        self._template_num = None
+        self._drs_template = None
+        self._ndpts = None
+
+    @property
+    def byte_array(self,):
+        self.file_obj.seek(self.start_pos)
+        return self.file_obj.read(self.section_length)
+
+    def decode_section(self,):
+        template, template_num, ndpts, pos = g2pylib.unpack5(
+            self.byte_array, 0, [])
+        self._template_num = template_num
+        self._template = template
+        self._ndpts = ndpts
+
+    @property
+    def template_num(self,):
+        if not self._decoded:
+            self.decode_section()
+        return self._template_num
+
+    @property
+    def drs_template(self,):
+        if not self._decoded:
+            self.decode_section()
+        return self._template
+
+    @property
+    def ndpts(self,):
+        if not self._decoded:
+            self.decode_section()
+        return self._ndpts
 
     def __repr__(self, ):
         return ("Section 5:\n"
@@ -236,7 +270,7 @@ class Section6:
         return self._bitmap
 
     @property
-    def bitmapflag(self,):
+    def bmapflag(self,):
         if not self._decoded:
             self.decode_section()
         return self._bitmapflag
@@ -279,7 +313,7 @@ class Grib2Message:
         self.section2 = self.read_section_n(2)
         self.section3 = self.read_section3()
         self.section4 = self.read_section_n(4)
-        self.section5 = self.read_section_n(5)
+        self.section5 = self.read_section5()
         self.section6 = self.read_section6()
         self.section7 = self.read_section7()
         self.decode_metadata()
@@ -383,6 +417,14 @@ class Grib2Message:
         section_bytes, sectnum = self._get_section_bytes(startpos)
         self.section_lengths[n] = len(section_bytes)
         return Section3(section_bytes)
+
+    def read_section5(self, ):
+        n = 5
+        startpos = self.section_starting_position(n)
+        self.file_obj.seek(startpos)
+        lensect, sectnum = struct.unpack('>IB', self.file_obj.read(5))
+        self.section_lengths[n] = lensect
+        return Section5(self.file_obj, startpos, lensect)
 
     def read_section6(self, ):
         n = 6
