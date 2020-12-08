@@ -1,4 +1,4 @@
-### GRIPY  -- (Grid Reader In PYthon)
+### GRIPY  -- (GRIB Reader In PYthon)
 
 The original aim was to keep it 100% python, but pulling in fortran makes it 500x faster, so maybe I'll change the name. 
 
