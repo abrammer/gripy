@@ -1,9 +1,8 @@
 name: gripy becnhmark Tests
 
-on:
-  #  push
-   schedule:
-     - cron:  '0 0 1 1 1'
+on: [push]
+  #  schedule:
+  #    - cron:  '0 0 1 1 1'
 
 jobs:
   unit_tests:
@@ -22,7 +21,7 @@ jobs:
       run: sudo apt install gfortran
       if: matrix.os == 'ubuntu-latest'
 
-    - uses: goanpeca/setup-miniconda@v1
+    - uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python }}
