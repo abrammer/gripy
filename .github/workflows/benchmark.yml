@@ -1,8 +1,8 @@
 name: gripy becnhmark Tests
 
-on: [push]
-  #  schedule:
-  #    - cron:  '0 0 1 1 1'
+on: # [push]
+    schedule:
+      - cron:  '0 0 1 1 1'
 
 jobs:
   unit_tests:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, ]
-        python: [3.6, 3.7,]
+        python: [3.8,]
     steps:
     - uses: actions/checkout@v1
       with:
