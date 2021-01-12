@@ -28,6 +28,6 @@ jobs:
     - shell: bash -l {0}
       run: |
         ls -ltr tests/data
-        conda install -c conda-forge cfgrib pygrib
+        conda install -c conda-forge cfgrib pygrib requests
         pip install .
         python benchmarks/read_gfs.py
