@@ -56,6 +56,7 @@ def benchmark_output(method, time_s):
 def main():
     download_gfs_file()
     print("Downloaded File")
+    n=10
     pygrib_time = timeit.timeit("pygrib_test()",
                                 number=n,
                                 setup="from __main__ import pygrib_test")
