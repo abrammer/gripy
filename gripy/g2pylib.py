@@ -1,4 +1,5 @@
 import struct
+from collections import namedtuple
 
 import numpy as np
 
@@ -381,9 +382,19 @@ def pds_template(template_number):
         # 4.0: Analysis or Forecast at Horizontal Level/Layer
         #      at a point in time
         0: {
-            'len': 15,
-            'needext': 0,
-            'mapdrs': [1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4]
+            'len':
+            15,
+            'needext':
+            0,
+            'mapdrs': [1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4],
+            'data':
+            namedtuple('pds_4_0', [
+                'category', 'number', 'generating_process',
+                'process_identifier', 'process_name', 'observational_hours',
+                'observation_minutes', 'time_units', 'forecast_time',
+                'surface_type1', 'surface_scale1', 'surface_value1',
+                'surface_type2', 'surface_scale2', 'surface_value2'
+            ])
         },
         # 4.1: Individual Ensemble Forecast at Horizontal Level/Layer
         #      at a point in time
@@ -921,8 +932,12 @@ def unpack4(buff, pos, y):
         # TODO: Implement Section 4 Template Extensions
         # TODO: Implement Section 4 Optional Coords
         # print("Not supported")
+    if pdstmpl.get('data'):
+        data = pdstmpl['data'](*template)
+    else:
+        data = None
     return np.array(template, dtype=np.int32), template_num, np.array(
-        [], dtype=np.int32), pos + length
+        [], dtype=np.int32), pos + length, data
 
 
 def unpack5(buff, pos, y):
@@ -973,12 +988,7 @@ def unpack6(buff, gds1, pos, y):
     return bitmap, bitmap_flag
 
 
-def unpack7(gribmessage,
-            gdtnum,
-            gdtmpl,
-            drtnum,
-            drtmpl,
-            ndpts):
+def unpack7(gribmessage, gdtnum, gdtmpl, drtnum, drtmpl, ndpts):
     ipos = 0
     fld = g2_unpack7(gribmessage, ipos, gdtnum, gdtmpl, drtnum, drtmpl, ndpts)
     return fld
@@ -999,7 +1009,7 @@ def g2_unpack7(cgrib, iofst, igdsnum, igdstmpl, idrsnum, idrstmpl, ngpts):
         # print("cgrib:", len(cgrib[iofst+5:]))
         # raise NotImplementedError('comunpack is not support yet, sorry :/ ')
         #         grb_int = np.frombuffer(cgrib[iofst+5:], dtype=np.uint8)
-        memview = memoryview(cgrib[iofst+5:])
+        memview = memoryview(cgrib[iofst + 5:])
         #         fld, ier = comunpack(grb_int, lensec, idrsnum, idrstmpl, ngpts)
         fld = comunpack(memview, lensec, idrsnum, idrstmpl, ngpts)
         # print(ier)

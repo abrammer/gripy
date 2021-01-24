@@ -210,9 +210,37 @@ class Section4:
     """PRODUCT DEFINITION SECTION:
     This includes details about the variable name, units, vertical coords.
     """
-    def __init__(self, template, template_num, *_):
-        self.template_num = template_num
-        self.pds_template = template
+    def __init__(self, io, pos, length):
+        self.file_obj = io
+        self.start_pos = pos
+        self.section_length = length
+        self._decoded = False
+        self._template_num = None
+        self._pds_template = None
+
+    @property
+    def byte_array(self):
+        self.file_obj.seek(self.start_pos)
+        return self.file_obj.read(self.section_length)
+
+    def decode_section(self):
+        template, template_num, _, pos, data = g2pylib.unpack4(
+            self.byte_array, 0, [])
+        self._template_num = template_num
+        self._template = template
+        self.template_data = data
+
+    @property
+    def template_num(self, ):
+        if not self._decoded:
+            self.decode_section()
+        return self._template_num
+
+    @property
+    def pds_template(self, ):
+        if not self._decoded:
+            self.decode_section()
+        return self._template
 
     def __repr__(self):
         return ("Section 4:\n"
@@ -346,7 +374,7 @@ class Grib2Message:
         self.section1 = self.read_section_n(1)
         self.section2 = self.read_section_n(2)
         self.section3 = self.read_section3()
-        self.section4 = self.read_section_n(4)
+        self.section4 = self.read_section4()
         self.section5 = self.read_section5()
         self.section6 = self.read_section6()
         self.section7 = self.read_section7()
@@ -358,6 +386,8 @@ class Grib2Message:
             f"\tlongname                = {self.longname}\n"
             f"\tunits                   = {self.units}\n"
             f"\tshortname               = {self.shortname}\n"
+            f"\tforecast type           = {self.generating_process}\n"
+            f"\tforecast time           = {self.forecast_time} {self.time_units}\n"
             f"\tGRIB2 Reference Time    = {self.section1.significanceOfReferenceTime}\n"
             f"\tGRIB2 Discipline        = {self.discipline_name()}\n"
             f"\tGRIB2 Category          = {self.category}\n"
@@ -374,6 +404,19 @@ class Grib2Message:
         self.shortname = variable_data[2]
         self.units = variable_data[1]
         self.longname = variable_data[0]
+        self.generating_process = get_table_value('4.3', pds_template[2])
+        self.observation_hours = pds_template[5]
+        self.observation_minutes = pds_template[6]
+        self.time_units = get_table_value('4.4', pds_template[7])
+        self.forecast_time = pds_template[8]
+        self.surface_type1 = get_table_value('4.5', pds_template[9])
+        surface_scale = pds_template[10]
+        surface_level = pds_template[11]
+        self.surface_level1 = surface_level * surface_scale
+        self.surface_type2 = get_table_value('4.5', pds_template[12])
+        surface_scale = pds_template[13]
+        surface_level = pds_template[14]
+        self.surface_level2 = surface_level * surface_scale
 
     def section_starting_position(self, section_num):
         pos = self.start_byte
@@ -425,12 +468,10 @@ class Grib2Message:
         section = {
             1: Section1,
             2: Section2,
-            4: Section4,
         }
         unpack = {
             1: g2pylib.unpack1,
             2: _unpack2,
-            4: g2pylib.unpack4,
         }
 
         startpos = self.section_starting_position(n)
@@ -448,6 +489,14 @@ class Grib2Message:
         lensect, sectnum = struct.unpack('>IB', self.file_obj.read(5))
         self.section_lengths[n] = lensect
         return Section3(self.file_obj, startpos, lensect)
+
+    def read_section4(self, ):
+        n = 4
+        startpos = self.section_starting_position(n)
+        self.file_obj.seek(startpos)
+        lensect, sectnum = struct.unpack('>IB', self.file_obj.read(5))
+        self.section_lengths[n] = lensect
+        return Section4(self.file_obj, startpos, lensect)
 
     def read_section5(self, ):
         n = 5
