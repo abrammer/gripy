@@ -23,6 +23,17 @@ jobs:
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Autobump version
+      run: |
+        # from refs/tags/v1.2.3 get 1.2.3
+        VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
+        PLACEHOLDER='version="__develop__"'
+        VERSION_FILE='setup.py'
+        # ensure the placeholder is there. If grep doesn't find the placeholder
+        # it exits with exit code 1 and github actions aborts the build.
+        grep "$PLACEHOLDER" "$VERSION_FILE"
+        sed -i "s/$PLACEHOLDER/version = \"${VERSION}\"/g" "$VERSION_FILE"
+      shell: bash
     - name: Build manylinux Python wheels
       uses: RalfG/python-wheels-manylinux-build@v0.2-manylinux1_x86_64
       with:
@@ -55,6 +66,18 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python }}
+
+    - name: Autobump version
+      run: |
+        # from refs/tags/v1.2.3 get 1.2.3
+        VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
+        PLACEHOLDER='version="__develop__"'
+        VERSION_FILE='setup.py'
+        # ensure the placeholder is there. If grep doesn't find the placeholder
+        # it exits with exit code 1 and github actions aborts the build.
+        grep "$PLACEHOLDER" "$VERSION_FILE"
+        sed -i "" "s/$PLACEHOLDER/version = \"${VERSION}\"/g" "$VERSION_FILE"
+      shell: bash
 
     - name: Fix Conda permissions on macOS
       run: |
