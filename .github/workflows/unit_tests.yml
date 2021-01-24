@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-10.15 ]
-        python: [3.6, 3.7, 3.8, 3.9]
+        python: [3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python }}
-    
+
     - name: ubuntu install fortran
       run: sudo apt install gfortran
       if: matrix.os == 'ubuntu-latest'
@@ -31,10 +31,13 @@ jobs:
 
     - name: macos install dependencies
       run: |
+        $CONDA/bin/conda install python=${{matrix.python}}
+        $CONDA/bin/python --version
         $CONDA/bin/conda install gfortran_osx-64 numpy wheel
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
         $CONDA/bin/python -m pip install -r requirements-test.txt
+
       if: matrix.os == 'macos-10.15'
 
     - name: macos run tests
@@ -50,7 +53,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install . 
+        pip install .
         pip install -r requirements-test.txt
       if: matrix.os != 'macos-10.15'
 
@@ -59,4 +62,3 @@ jobs:
         pip install pytest
         pytest tests/
       if: matrix.os != 'macos-10.15'
-

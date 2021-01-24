@@ -43,7 +43,11 @@ class Grib2File:
                 break  # at EOF
             # otherwise, start (='GRIB') contains indicator message (section 0)
             startpos = self.file_obj.tell() - 4
-            self.grib_msgs.append(Grib2Message(self.file_obj, startpos))
+            try:
+                self.grib_msgs.append(Grib2Message(self.file_obj, startpos))
+            except IOError:
+                print('Skipping Grib1 Message')
+                continue
         # if no grib messages found, nmsg is still 0 and it's not GRIB.
         if not self.grib_msgs:
             raise IOError('not a GRIB file')
@@ -453,6 +457,7 @@ class Grib2Message:
         # get discipline and version info.
         _, disc, vers, lengrib = struct.unpack('>HBBq', self.file_obj.read(12))
         if vers != 2:
+            self.file_obj.seek(lengrib,1)
             raise IOError('not a GRIB2 file (version number %d)' % vers)
         # we read 16 octets above, and need 4 at the end of the message
         self.file_obj.seek(lengrib - 20, 1)
