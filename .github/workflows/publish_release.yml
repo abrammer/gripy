@@ -55,11 +55,11 @@ jobs:
 
     - name: Publish wheels to PyPI
       if: github.event.base_ref == 'refs/heads/master'
-      # env:
-      #   TWINE_USERNAME: __token__
-      #   TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
-      run: echo "We would run here"
-        # twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} wheelhouse/gripy*-manylinux*.whl
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
+      run: |
+        twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} wheelhouse/gripy*-manylinux*.whl
 
   build-n-publish_macos:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
@@ -114,8 +114,9 @@ jobs:
         $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
     - name: Publish wheels to PyPI
       if: github.event.base_ref == 'refs/heads/master'
-      # env:
-        # TWINE_USERNAME: __token__
-        # TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
-      run: pip install twine
-        # twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} fixed_wheels/gripy*-macosx*.whl
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
+      run: |
+        pip install twine
+        twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} fixed_wheels/gripy*-macosx*.whl
