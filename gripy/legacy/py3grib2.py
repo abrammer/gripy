@@ -675,7 +675,7 @@ class Grib2Message:
         gdsinfo = self.grid_definition_info
         ngrdpts = gdsinfo[1]
         ipos = self._section7_byte_offset
-        fld1 = g2pylib.unpack7(gribmsg,gdtnum,gdtmpl,drtnum,drtmpl,ndpts,ipos,np.empty,storageorder=storageorder)
+        fld1 = g2pylib.unpack7(gribmsg[self._section7_byte_offset:],gdtnum,gdtmpl,drtnum,drtmpl,ndpts)
         # apply bitmap.
         if bitmapflag == 0:
             bitmap=self._bitmap

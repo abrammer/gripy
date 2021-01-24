@@ -11,6 +11,7 @@ import gripy.grib2
 
 TESTDATADIR = pathlib.Path(__file__).parent.parent / 'tests/data'
 
+
 def download_gfs_file():
     local_file = TESTDATADIR / "gfs.t00z.pgrb2b.0p25.f041"
     if local_file.exists():
@@ -56,7 +57,7 @@ def benchmark_output(method, time_s):
 def main():
     download_gfs_file()
     print("Downloaded File")
-    n=10
+    n = 10
     pygrib_time = timeit.timeit("pygrib_test()",
                                 number=n,
                                 setup="from __main__ import pygrib_test")
