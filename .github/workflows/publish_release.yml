@@ -53,7 +53,7 @@ jobs:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
         echo "$GITHUB_CONTEXT"
-        echo ${{ github.ref }}
+        echo ${{ github.event.base_ref }}
 
     - name: Publish wheels to PyPI
       if: github.event.base_ref == 'refs/heads/master'
@@ -100,7 +100,7 @@ jobs:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
         echo "$GITHUB_CONTEXT"
-        echo ${{ github.event.pull_request.title }}
+        echo ${{ github.event.base_ref }}
     - name: macos install dependencies
       env:
         DELOCATE_LIBRARY_PATH: /usr/local/miniconda/lib
@@ -115,7 +115,7 @@ jobs:
         echo "Start delocate"
         $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
     - name: Publish wheels to PyPI
-      if: github.base_ref == 'refs/heads/master'
+      if: github.event.base_ref == 'refs/heads/master'
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
