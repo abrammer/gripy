@@ -33,7 +33,7 @@ jobs:
       run: |
         $CONDA/bin/conda install python=${{matrix.python}}
         $CONDA/bin/python --version
-        $CONDA/bin/conda install gfortran_osx-64 numpy wheel
+        $CONDA/bin/conda install gfortran_osx-64
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
         $CONDA/bin/python -m pip install .
         $CONDA/bin/python -m pip install -r requirements-test.txt

@@ -2,12 +2,7 @@ import setuptools
 from distutils.core import setup
 
 from distutils.command.sdist import sdist
-try:
-    from numpy.distutils.core import setup, Extension
-except ImportError:
-    from setuptools import dist
-    dist.Distribution().fetch_build_eggs(['numpy>=1.10'])
-    from numpy.distutils.core import setup, Extension
+from numpy.distutils.core import setup, Extension
 
 
 lib = Extension(name='gripy.libg2', sources=['gripy/libg2.f90'])
@@ -18,7 +13,7 @@ setup(
     author='abrammer',
     author_email='alan.brammer@gmail.com',
     url='https://github.com/abrammer/gripy',
-    version="__develop__",
+    version="0.0.0a0",
     install_requires=[
         'numpy',
     ],
