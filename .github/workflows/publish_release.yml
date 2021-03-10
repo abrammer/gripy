@@ -103,7 +103,7 @@ jobs:
       env:
         DELOCATE_LIBRARY_PATH: /usr/local/miniconda/lib
       run: |
-        $CONDA/bin/conda install python=${{ matrix.python }} gfortran_osx-64 numpy wheel
+        $CONDA/bin/conda install python=${{ matrix.python }} gfortran_osx-64 
         $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
         $CONDA/bin/python --version
         ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
