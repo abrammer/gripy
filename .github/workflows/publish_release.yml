@@ -27,12 +27,12 @@ jobs:
       run: |
         # from refs/tags/v1.2.3 get 1.2.3
         VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
-        PLACEHOLDER='version="0.0.0a0"'
-        VERSION_FILE='setup.py'
+        PLACEHOLDER='version = 0.0.0a0'
+        VERSION_FILE='setup.cfg'
         # ensure the placeholder is there. If grep doesn't find the placeholder
         # it exits with exit code 1 and github actions aborts the build.
         grep "$PLACEHOLDER" "$VERSION_FILE"
-        sed -i "s/$PLACEHOLDER/version = \"${VERSION}\"/g" "$VERSION_FILE"
+        sed -i "s/$PLACEHOLDER/version = ${VERSION}/g" "$VERSION_FILE"
       shell: bash
 
     - name: Build manylinux Python wheels
@@ -80,12 +80,12 @@ jobs:
       run: |
         # from refs/tags/v1.2.3 get 1.2.3
         VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
-        PLACEHOLDER='version="0.0.0a0"'
-        VERSION_FILE='setup.py'
+        PLACEHOLDER='version = 0.0.0a0'
+        VERSION_FILE='setup.cfg'
         # ensure the placeholder is there. If grep doesn't find the placeholder
         # it exits with exit code 1 and github actions aborts the build.
         grep "$PLACEHOLDER" "$VERSION_FILE"
-        sed -i "" "s/$PLACEHOLDER/version = \"${VERSION}\"/g" "$VERSION_FILE"
+        sed -i "" "s/$PLACEHOLDER/version = ${VERSION}/g" "$VERSION_FILE"
       shell: bash
 
     - name: Fix Conda permissions on macOS
