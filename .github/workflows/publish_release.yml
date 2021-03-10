@@ -27,7 +27,7 @@ jobs:
       run: |
         # from refs/tags/v1.2.3 get 1.2.3
         VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
-        PLACEHOLDER='version="__develop__"'
+        PLACEHOLDER='version="0.0.0a0"'
         VERSION_FILE='setup.py'
         # ensure the placeholder is there. If grep doesn't find the placeholder
         # it exits with exit code 1 and github actions aborts the build.
