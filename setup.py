@@ -1,4 +1,5 @@
 import setuptools
+from distutils.core import setup
 
 from distutils.command.sdist import sdist
 from numpy.distutils.core import setup, Extension
@@ -6,7 +7,8 @@ from numpy.distutils.core import setup, Extension
 
 lib = Extension(name='gripy.libg2', sources=['gripy/libg2.f90'])
 
+
 setup(
-    ext_modules=[lib],
+    ext_modules=[lib, ],
     cmdclass={'sdist': sdist},
 )
