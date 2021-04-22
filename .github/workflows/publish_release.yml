@@ -17,8 +17,7 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install twine flake8
+        python -m pip install --upgrade pip flake8
     - name: Lint with flake8 for syntax errors
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
@@ -36,30 +35,25 @@ jobs:
       shell: bash
 
     - name: Build manylinux Python wheels
-      uses: RalfG/python-wheels-manylinux-build@v0.2-manylinux1_x86_64
+      uses: RalfG/python-wheels-manylinux-build@v0.3.3-manylinux2014_x86_64
       with:
         python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39'
         build-requirements: ''
         package-path: ''
-    - uses: actions/upload-artifact@v1
+        pip-wheel-args: '-w ./wheelhouse --no-deps'
+
+    - uses: actions/upload-artifact@v2
       with:
         name: wheelhouse
         path: wheelhouse
 
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: |
-        echo "$GITHUB_CONTEXT"
-        echo ${{ github.event.base_ref }}
-
-    - name: Publish wheels to PyPI
-      if: github.event.base_ref == 'refs/heads/master'
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
-      run: |
-        twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} wheelhouse/gripy*-manylinux*.whl
+    - name: Publish a Python distribution to PyPI
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
+        packages_dir: wheelhouse/
 
   build-n-publish_macos:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
@@ -112,11 +106,12 @@ jobs:
         $CONDA/bin/python setup.py bdist_wheel
         echo "Start delocate"
         $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
-    - name: Publish wheels to PyPI
-      if: github.event.base_ref == 'refs/heads/master'
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
-      run: |
-        pip install twine
-        twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} fixed_wheels/gripy*-macosx*.whl
+
+    - name: Publish a Python distribution to PyPI
+     if: github.event.base_ref == 'refs/heads/master'
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
+        packages_dir: fixed_wheels/
+
