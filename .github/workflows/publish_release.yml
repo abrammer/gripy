@@ -53,7 +53,7 @@ jobs:
         path: wheelupload
 
     - name: Publish a Python distribution to PyPI
-      #if: github.event.base_ref == 'refs/heads/master'
+      if: github.event.base_ref == 'refs/heads/master'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
