@@ -42,6 +42,10 @@ jobs:
         package-path: ''
         pip-wheel-args: '-w ./wheelhouse --no-deps'
 
+    - name: purge old _linux_wheels
+      run: |
+        rm -f wheelhouse/*-linux_*
+
     - uses: actions/upload-artifact@v2
       with:
         name: wheelhouse
