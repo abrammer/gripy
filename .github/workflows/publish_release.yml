@@ -45,7 +45,7 @@ jobs:
     - name: purge old _linux_wheels
       run: |
         mkdir wheelupload
-        cp wheelhouse/*manylinux_* wheelupload/
+        cp wheelhouse/*manylinux* wheelupload/
 
     - uses: actions/upload-artifact@v2
       with:
