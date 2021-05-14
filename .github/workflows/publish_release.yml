@@ -43,6 +43,7 @@ jobs:
         CIBW_SKIP: '*35-*'
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
         CIBW_ARCHS_LINUX: 'x86_64'
+        CIBW_TEST_REQUIRES: pytest hypothesis pupygrib
         CIBW_TEST_COMMAND: pytest /project/tests/
 
     - name: purge old _linux_wheels
