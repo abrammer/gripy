@@ -37,11 +37,13 @@ jobs:
 
     - name: build wheels
       run: |
-          python -m cibuildwheel --output-dir dist
+          python -m cibuildwheel --output-dir wheelhouse
       env:
         CIBW_BUILD: '{cp,pp}3*-*'
+        CIBW_SKIP: '*35-*'
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
         CIBW_ARCHS_LINUX: 'x86_64'
+        CIBW_TEST_COMMAND: pytest /project/tests/
 
     - name: purge old _linux_wheels
       run: |
