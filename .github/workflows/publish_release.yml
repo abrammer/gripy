@@ -66,18 +66,19 @@ jobs:
 
   build-n-publish_macos:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
-    strategy:
-      matrix:
-        python: [3.6,3.7, 3.8]
     runs-on: macos-latest
     steps:
 
     - uses: actions/checkout@v2
 
-    - name: Set up Python ${{ matrix.python }}
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python }}
+        python-version: 3.8
+  
+    - name: Install dependencies
+      run: |
+        python -m pip install cibuildwheel
 
     # - name: Autobump version
     #   run: |
@@ -91,30 +92,15 @@ jobs:
     #     sed -i "" "s/$PLACEHOLDER/version = ${VERSION}/g" "$VERSION_FILE"
     #   shell: bash
 
-    - name: Fix Conda permissions on macOS
+    - name: build wheels
       run: |
-        sudo chown -R $UID $CONDA
-        echo $SHELL
-        $CONDA/bin/conda init bash
-    - name: Dump GitHub context
+          python -m cibuildwheel --output-dir wheelhouse
       env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: |
-        echo "$GITHUB_CONTEXT"
-        echo ${{ github.event.base_ref }}
-    - name: macos install dependencies
-      env:
-        DELOCATE_LIBRARY_PATH: /usr/local/miniconda/lib
-      run: |
-        $CONDA/bin/conda install python=${{ matrix.python }} gfortran_osx-64 
-        $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
-        $CONDA/bin/python --version
-        ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
-        $CONDA/bin/python -m pip install .
-        $CONDA/bin/python -m pip install -r requirements-test.txt
-        $CONDA/bin/python setup.py bdist_wheel
-        echo "Start delocate"
-        $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
+        CIBW_BUILD: '{cp,pp}3*-*'
+        CIBW_SKIP: '*35-*'
+        CIBW_TEST_REQUIRES: pytest hypothesis pupygrib
+        CIBW_TEST_COMMAND: pytest /project/tests/
+
 
     - name: Publish a Python distribution to PyPI
       if: github.event.base_ref == 'refs/heads/master'
