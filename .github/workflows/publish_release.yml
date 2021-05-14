@@ -98,6 +98,7 @@ jobs:
       env:
         CIBW_BUILD: '{cp,pp}3*-*'
         CIBW_SKIP: '*35-*'
+        CIBW_BEFORE_ALL: brew install gfortran
         CIBW_TEST_REQUIRES: pytest hypothesis pupygrib
         CIBW_TEST_COMMAND: pytest /project/tests/
 
