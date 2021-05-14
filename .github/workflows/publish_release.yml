@@ -1,9 +1,8 @@
 name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
 
-on:
-  push:
-    tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+on: [push] 
+    # tags:
+    # - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build-n-publish_linux:
@@ -18,10 +17,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip flake8
+    
     - name: Lint with flake8 for syntax errors
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
     - name: Autobump version
       run: |
         # from refs/tags/v1.2.3 get 1.2.3
@@ -34,13 +35,13 @@ jobs:
         sed -i "s/$PLACEHOLDER/version = ${VERSION}/g" "$VERSION_FILE"
       shell: bash
 
-    - name: Build manylinux Python wheels
-      uses: RalfG/python-wheels-manylinux-build@v0.3.3-manylinux2014_x86_64
-      with:
-        python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39'
-        build-requirements: ''
-        package-path: ''
-        pip-wheel-args: '-w ./wheelhouse --no-deps'
+    - name: build wheels
+      run: |
+          python -m cibuildwheel --output-dir dist
+      env:
+        CIBW_BUILD: '{cp,pp}3*-*'
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+        CIBW_ARCHS_LINUX: 'x86_64'
 
     - name: purge old _linux_wheels
       run: |
