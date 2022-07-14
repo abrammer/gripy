@@ -26,7 +26,7 @@ def download_gfs_file():
 
 
 def gripy_test():
-    with gripy.grib2.Grib2File(TESTDATADIR / 'gfs.t00z.pgrb2b.0p25.f041') as g2:
+    with gripy.open(TESTDATADIR / 'gfs.t00z.pgrb2b.0p25.f041') as g2:
         _ = [msg.shortname for msg in g2.grib_msgs]
         units = [msg.units for msg in g2.grib_msgs]
         assert units[150] == '%'
