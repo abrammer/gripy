@@ -5,8 +5,14 @@ from distutils.command.sdist import sdist
 from numpy.distutils.core import setup, Extension
 
 
+def get_gcc_majorversion():
+    version_string = subprocess.check_output(["gcc", "-dumpversion"]).decode()
+    major = version_string.split('.', maxsplit=1)[0]
+    return major
+
+
 f90flags = []
-if int(subprocess.check_output(["gcc", "-dumpversion"])) >= 10:
+if get_gcc_majorversion() >= 10:
     f90flags += ["-fallow-argument-mismatch"]
 
 lib = Extension(
