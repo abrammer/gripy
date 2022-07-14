@@ -8,7 +8,7 @@ from numpy.distutils.core import setup, Extension
 def get_gcc_majorversion():
     version_string = subprocess.check_output(["gcc", "-dumpversion"]).decode()
     major = version_string.split('.', maxsplit=1)[0]
-    return major
+    return int(major)
 
 
 f90flags = []
