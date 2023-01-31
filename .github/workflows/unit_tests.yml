@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python }}
 
@@ -22,23 +22,10 @@ jobs:
       run: sudo apt install gfortran
       if: matrix.os == 'ubuntu-latest'
 
-    # - name: Fix Conda permissions on macOS
-    #   run: |
-    #     sudo chown -R $UID $CONDA
-    #     echo $SHELL
-    #     $CONDA/bin/conda init bash
-    #   if: matrix.os == 'macos-12'
-
-    - name: macos install dependencies
+    - name: macos install fortran
       run: |
-        brew reinstall gcc
-        python -m pip install .
-        python -m pip install -r requirements-test.txt
-
-      if: matrix.os == 'macos-12'
-
-    - name: macos run tests
-      run: pytest tests/
+        brew reinstall gcc  
+      # reinstalling gcc installs gfortran which is missing by default
       if: matrix.os == 'macos-12'
 
     - name: windows install fortran
@@ -52,10 +39,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install .
         pip install -r requirements-test.txt
-      if: matrix.os != 'macos-12'
 
     - name: Test with pytest
       run: |
         pip install pytest
         pytest tests/
-      if: matrix.os != 'macos-12'
