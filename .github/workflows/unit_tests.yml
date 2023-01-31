@@ -22,26 +22,23 @@ jobs:
       run: sudo apt install gfortran
       if: matrix.os == 'ubuntu-latest'
 
-    - name: Fix Conda permissions on macOS
-      run: |
-        sudo chown -R $UID $CONDA
-        echo $SHELL
-        $CONDA/bin/conda init bash
-      if: matrix.os == 'macos-12'
+    # - name: Fix Conda permissions on macOS
+    #   run: |
+    #     sudo chown -R $UID $CONDA
+    #     echo $SHELL
+    #     $CONDA/bin/conda init bash
+    #   if: matrix.os == 'macos-12'
 
     - name: macos install dependencies
       run: |
-        $CONDA/bin/conda install python=${{matrix.python}}
-        $CONDA/bin/python --version
-        $CONDA/bin/conda install gfortran_osx-64
-        ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
-        $CONDA/bin/python -m pip install .
-        $CONDA/bin/python -m pip install -r requirements-test.txt
+        brew reinstall gcc
+        python -m pip install .
+        python -m pip install -r requirements-test.txt
 
       if: matrix.os == 'macos-12'
 
     - name: macos run tests
-      run: $CONDA/bin/pytest tests/
+      run: pytest tests/
       if: matrix.os == 'macos-12'
 
     - name: windows install fortran
