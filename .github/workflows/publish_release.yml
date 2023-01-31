@@ -1,122 +1,70 @@
 name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
 
-on:
-  push:
-    tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+on: [push] 
+    # tags:
+    # - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build-n-publish_linux:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-12 ]
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: "3.10"
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install twine flake8
+        python -m pip install --upgrade pip flake8 cibuildwheel
+    
     - name: Lint with flake8 for syntax errors
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Autobump version
-      run: |
-        # from refs/tags/v1.2.3 get 1.2.3
-        VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
-        PLACEHOLDER='version = 0.0.0a0'
-        VERSION_FILE='setup.cfg'
-        # ensure the placeholder is there. If grep doesn't find the placeholder
-        # it exits with exit code 1 and github actions aborts the build.
-        grep "$PLACEHOLDER" "$VERSION_FILE"
-        sed -i "s/$PLACEHOLDER/version = ${VERSION}/g" "$VERSION_FILE"
-      shell: bash
+    
+    # - name: Autobump version
+    #   run: |
+    #     # from refs/tags/v1.2.3 get 1.2.3
+    #     VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
+    #     PLACEHOLDER='version = 0.0.0a0'
+    #     VERSION_FILE='setup.cfg'
+    #     # ensure the placeholder is there. If grep doesn't find the placeholder
+    #     # it exits with exit code 1 and github actions aborts the build.
+    #     grep "$PLACEHOLDER" "$VERSION_FILE"
+    #     sed -i "" "s/$PLACEHOLDER/version = ${VERSION}/g" "$VERSION_FILE"
+    #   shell: bash
 
-    - name: Build manylinux Python wheels
-      uses: RalfG/python-wheels-manylinux-build@v0.2-manylinux1_x86_64
-      with:
-        python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39'
-        build-requirements: ''
-        package-path: ''
-    - uses: actions/upload-artifact@v1
+    - name: build wheels
+      run: |
+          python -m cibuildwheel --output-dir wheelhouse
+      env:
+        CIBW_BUILD: '{cp,pp}3*-*'
+        CIBW_SKIP: '*35-* pp??-macosx_x86_64'
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
+        CIBW_ARCHS_LINUX: 'x86_64'
+        CIBW_BEFORE_ALL_MACOS: brew reinstall gcc
+        CIBW_TEST_REQUIRES: pytest hypothesis pupygrib
+        CIBW_TEST_COMMAND: pytest {project}/tests/
+
+    - name: purge old _linux_wheels
+      run: |
+        mkdir wheelupload
+        cp wheelhouse/*gripy* wheelupload/
+
+    - uses: actions/upload-artifact@v3
       with:
         name: wheelhouse
-        path: wheelhouse
+        path: wheelupload
 
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: |
-        echo "$GITHUB_CONTEXT"
-        echo ${{ github.event.base_ref }}
-
-    - name: Publish wheels to PyPI
+    - name: Publish a Python distribution to PyPI
       if: github.event.base_ref == 'refs/heads/master'
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
-      run: |
-        twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} wheelhouse/gripy*-manylinux*.whl
-
-  build-n-publish_macos:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
-    strategy:
-      matrix:
-        python: [3.6,3.7, 3.8]
-    runs-on: macos-latest
-    steps:
-
-    - uses: actions/checkout@v2
-
-    - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v2
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        python-version: ${{ matrix.python }}
-
-    - name: Autobump version
-      run: |
-        # from refs/tags/v1.2.3 get 1.2.3
-        VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
-        PLACEHOLDER='version = 0.0.0a0'
-        VERSION_FILE='setup.cfg'
-        # ensure the placeholder is there. If grep doesn't find the placeholder
-        # it exits with exit code 1 and github actions aborts the build.
-        grep "$PLACEHOLDER" "$VERSION_FILE"
-        sed -i "" "s/$PLACEHOLDER/version = ${VERSION}/g" "$VERSION_FILE"
-      shell: bash
-
-    - name: Fix Conda permissions on macOS
-      run: |
-        sudo chown -R $UID $CONDA
-        echo $SHELL
-        $CONDA/bin/conda init bash
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: |
-        echo "$GITHUB_CONTEXT"
-        echo ${{ github.event.base_ref }}
-    - name: macos install dependencies
-      env:
-        DELOCATE_LIBRARY_PATH: /usr/local/miniconda/lib
-      run: |
-        $CONDA/bin/conda install python=${{ matrix.python }} gfortran_osx-64 
-        $CONDA/bin/python -m pip install git+https://github.com/abrammer/delocate.git
-        $CONDA/bin/python --version
-        ln -s $CONDA/bin/gfortran /usr/local/bin/gfortran
-        $CONDA/bin/python -m pip install .
-        $CONDA/bin/python -m pip install -r requirements-test.txt
-        $CONDA/bin/python setup.py bdist_wheel
-        echo "Start delocate"
-        $CONDA/bin/delocate-wheel -w fixed_wheels -v  dist/gripy-*
-    - name: Publish wheels to PyPI
-      if: github.event.base_ref == 'refs/heads/master'
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
-      run: |
-        pip install twine
-        twine upload -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} fixed_wheels/gripy*-macosx*.whl
+        user: __token__
+        password: ${{ secrets.PYPI_GLOBAL_PASSWORD }}
+        packages_dir: wheelupload/

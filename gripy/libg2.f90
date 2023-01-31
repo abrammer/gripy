@@ -129,10 +129,11 @@
     integer,intent(in) :: idrstmpl(*)
     real,intent(out) :: fld(ndpts)
 
+    integer:: ival1(1), ival2(1), isign(1), minsd(1)
     integer,allocatable :: ifld(:),ifldmiss(:)
-    integer(4) :: ieee
+
     integer,allocatable :: gref(:),gwidth(:),glen(:)
-    real :: ref,bscale,dscale,rmiss1,rmiss2
+    real :: ref,bscale,dscale,rmiss1(1),rmiss2(1)
     ! real :: fldo(6045)
     integer :: totBit, totLen, non
     !f2py intent(in) cpack
@@ -145,8 +146,8 @@
 
     ier=0
     ! print *,'IDRSTMPL: ',(idrstmpl(j),j=1,16)
-    ieee = idrstmpl(1)
-    call rdieee(ieee, ref, 1)
+    ref = real(idrstmpl(1))
+    ! call rdieee(ieee, ref, 1)
     bscale = 2.0**real(idrstmpl(2))
     dscale = 10.0**real(-idrstmpl(3))
     nbitsgref = idrstmpl(4)
@@ -211,7 +212,7 @@
         iofst=iofst+1
         call gbytes(cpack,minsd,iofst,nbitsd-1, 0, 1)
         iofst=iofst+nbitsd-1
-        if (isign.eq.1) minsd=-minsd
+        if (isign(1).eq.1) minsd=-minsd
       else
         ival1=0
         ival2=0
@@ -273,6 +274,7 @@
     !  Test to see if the group widths and lengths are consistent with number of
     !  values, and length of section 7.
     !
+    non=1
     totBit = 0
     totLen = 0
     do j=1,ngroups
@@ -363,26 +365,26 @@
     ! print*,' idrstmpl(17)', idrstmpl(17)
     if (idrsnum.eq.3) then         ! spatial differencing
       if (idrstmpl(17).eq.1) then      ! first order
-          ifld(1)=ival1
+          ifld(1)=ival1(1)
           if ( idrstmpl(7).eq.0 ) then        ! no missing values
             itemp=ndpts
           else
             itemp=non-1
           endif
           do n=2,itemp
-            ifld(n)=ifld(n)+minsd
+            ifld(n)=ifld(n)+minsd(1)
             ifld(n)=ifld(n)+ifld(n-1)
           enddo
       elseif (idrstmpl(17).eq.2) then    ! second order
-          ifld(1)=ival1
-          ifld(2)=ival2
+          ifld(1)=ival1(1)
+          ifld(2)=ival2(1)
           if ( idrstmpl(7).eq.0 ) then        ! no missing values
             itemp=ndpts
           else
             itemp=non-1
           endif
           do n=3,itemp
-            ifld(n)=ifld(n)+minsd
+            ifld(n)=ifld(n)+minsd(1)
             ifld(n)=ifld(n)+(2*ifld(n-1))-ifld(n-2)
           enddo
       endif
@@ -407,9 +409,9 @@
           !print *,'SAG ',n,fld(n),ifld(non),bscale,ref,dscale
           non=non+1
         elseif ( ifldmiss(n).eq.1 ) then
-          fld(n)=rmiss1
+          fld(n)=rmiss1(1)
         elseif ( ifldmiss(n).eq.2 ) then
-          fld(n)=rmiss2
+          fld(n)=rmiss2(1)
         endif
       enddo
       if ( allocated(ifldmiss) ) deallocate(ifldmiss)
@@ -454,7 +456,7 @@
     !
     !$$$
 
-    real(4),intent(in) :: rieee(num)
+    integer(4),intent(in) :: rieee(num)
     real,intent(out) :: a(num)
     integer,intent(in) :: num
 
