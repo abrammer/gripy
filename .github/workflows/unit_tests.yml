@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-10.15 ]
+        os: [ ubuntu-latest, macos-12 ]
         python: [3.7, 3.8, 3.9, "3.10"]
 
     steps:
@@ -27,7 +27,7 @@ jobs:
         sudo chown -R $UID $CONDA
         echo $SHELL
         $CONDA/bin/conda init bash
-      if: matrix.os == 'macos-10.15'
+      if: matrix.os == 'macos-12'
 
     - name: macos install dependencies
       run: |
@@ -38,11 +38,11 @@ jobs:
         $CONDA/bin/python -m pip install .
         $CONDA/bin/python -m pip install -r requirements-test.txt
 
-      if: matrix.os == 'macos-10.15'
+      if: matrix.os == 'macos-12'
 
     - name: macos run tests
       run: $CONDA/bin/pytest tests/
-      if: matrix.os == 'macos-10.15'
+      if: matrix.os == 'macos-12'
 
     - name: windows install fortran
       run: |
@@ -55,10 +55,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install .
         pip install -r requirements-test.txt
-      if: matrix.os != 'macos-10.15'
+      if: matrix.os != 'macos-12'
 
     - name: Test with pytest
       run: |
         pip install pytest
         pytest tests/
-      if: matrix.os != 'macos-10.15'
+      if: matrix.os != 'macos-12'

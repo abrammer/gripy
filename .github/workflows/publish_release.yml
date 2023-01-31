@@ -47,7 +47,7 @@ jobs:
         CIBW_SKIP: '*35-* pp??-macosx_x86_64'
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
         CIBW_ARCHS_LINUX: 'x86_64'
-        CIBW_BEFORE_ALL_MACOS: brew install gfortran
+        CIBW_BEFORE_ALL_MACOS: brew reinstall gcc
         CIBW_TEST_REQUIRES: pytest hypothesis pupygrib
         CIBW_TEST_COMMAND: pytest {project}/tests/
 
